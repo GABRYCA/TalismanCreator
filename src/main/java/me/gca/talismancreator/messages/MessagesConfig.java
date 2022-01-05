@@ -6,10 +6,15 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class MessagesConfig {
 
     private FileConfiguration messages;
+    private HashMap<String, String> defMessages = new HashMap<>() {{
+        put("Messages.Missing_Permission", "Sorry but you don't have the permission to use that!");
+        put("Messages.Command_Not_Found", "Sorry, command not found!");
+        }};
 
     public MessagesConfig(){
 
@@ -22,21 +27,37 @@ public class MessagesConfig {
                 file.createNewFile();
                 messages = YamlConfiguration.loadConfiguration(file);
                 // Here code to write all new strings.
-                //TODO
-
+                for (String i : defMessages.keySet()){
+                    messages.set(i, defMessages.get(i));
+                }
                 // Save.
                 messages.save(file);
-            } catch (IOException ex){}
+            } catch (IOException e){
+                e.printStackTrace();
+                return;
+            }
 
         } else {
             // Load config.
             messages = YamlConfiguration.loadConfiguration(file);
             // Check if all strings are already there and if not update it, if updated then save.
-            //TODO
-
+            for (String i : defMessages.keySet()){
+                if (messages.get(i) == null){
+                    messages.set(i, defMessages.get(i));
+                }
+            }
+            try {
+                messages.save(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
         }
-        // Load it again the final version.
+        // Load again the final version.
         messages = YamlConfiguration.loadConfiguration(file);
     }
 
+    public FileConfiguration getMessages(){
+        return messages;
+    }
 }

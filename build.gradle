@@ -15,9 +15,11 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
+    maven { url = 'https://mvnrepository.com/artifact/com.github.cryptomorin' }
 }
 
 dependencies {
+    implementation 'com.github.cryptomorin:XSeries:8.5.0.1'
     compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
 }
 
