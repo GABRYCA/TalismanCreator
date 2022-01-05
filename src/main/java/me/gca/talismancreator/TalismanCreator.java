@@ -1,6 +1,7 @@
 package me.gca.talismancreator;
 
 import me.gca.talismancreator.events.EventsListeners;
+import me.gca.talismancreator.managers.TalismansManager;
 import me.gca.talismancreator.messages.MessagesConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,6 +16,7 @@ public final class TalismanCreator extends JavaPlugin {
     public static TalismanCreator instance;
     public static MessagesConfig mConfigInstance;
     public static FileConfiguration messagesConfig;
+    public static TalismansManager talismansManager;
 
     public static TalismanCreator getInstance(){
         return instance;
@@ -40,6 +42,7 @@ public final class TalismanCreator extends JavaPlugin {
         this.saveConfig();
         mConfigInstance = new MessagesConfig();
         messagesConfig = mConfigInstance.getMessages();
+        talismansManager = new TalismansManager();
     }
 
     @Override

@@ -1,8 +1,10 @@
 package me.gca.talismancreator.managers;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.cryptomorin.xseries.XPotion;
 import me.gca.talismancreator.TalismanCreator;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +14,9 @@ public class Talisman {
     private XMaterial xMaterial;
     private String title;
     private List<String> lore;
-    private List<XPotion> effects;
+    private List<PotionEffect> effects;
 
-    public Talisman(XMaterial xMaterial, String title, List<XPotion> effects){
+    public Talisman(XMaterial xMaterial, String title, List<PotionEffect> effects){
         this.xMaterial = xMaterial;
         this.title = TalismanCreator.colorFormat(title);
         List<String> tempLore = new ArrayList<>();
@@ -23,7 +25,14 @@ public class Talisman {
         this.effects = effects;
     }
 
-    public Talisman(XMaterial xMaterial, String title, List<XPotion> effects, List<String> lore){
+    public Talisman(ItemStack itemStack, List<PotionEffect> effects){
+        this.xMaterial = XMaterial.matchXMaterial(itemStack);
+        this.title = itemStack.getItemMeta().getDisplayName();
+        this.lore = itemStack.getItemMeta().getLore();
+        this.effects = effects;
+    }
+
+    public Talisman(XMaterial xMaterial, String title, List<PotionEffect> effects, List<String> lore){
         this.xMaterial = xMaterial;
         this.title = TalismanCreator.colorFormat(title);
         this.lore = TalismanCreator.colorFormat(lore);
@@ -62,19 +71,26 @@ public class Talisman {
         this.lore = TalismanCreator.colorFormat(lore);
     }
 
-    public List<XPotion> getEffects() {
+    public List<PotionEffect> getEffects() {
         return effects;
     }
 
-    public void setEffects(List<XPotion> effects) {
+    public void setEffects(List<PotionEffect> effects) {
         this.effects = effects;
     }
 
-    @Override
-    public String toString() {
-        return "xMaterial: " + xMaterial +
-        "\ntitle:" + title +
-        "\nlore:" + lore +
-        "\neffects:" + effects;
+    public ItemStack getItemStack(){
+        ItemStack itemStack = xMaterial.parseItem();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(title);
+        if (!lore.isEmpty()) {
+            itemMeta.setLore(lore);
+        } else {
+            List<String> tempLore = new ArrayList<>();
+            tempLore.add(TalismanCreator.colorFormat(TalismanCreator.getInstance().getConfig().getString("Talisman.DefaultLore")));
+            itemMeta.setLore(tempLore);
+        }
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 }
