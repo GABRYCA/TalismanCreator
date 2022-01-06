@@ -14,6 +14,8 @@ public class MessagesConfig {
     private HashMap<String, String> defMessages = new HashMap<>() {{
         put("Messages.Missing_Permission", "Sorry but you don't have the permission to use that!");
         put("Messages.Command_Not_Found", "Sorry, command not found!");
+        put("Messages.Talisman_Not_Found", "Sorry, Talisman not found!");
+        put("Messages.Talisman_Remove_Success", "Talisman removed with success!");
         }};
 
     public MessagesConfig(){
