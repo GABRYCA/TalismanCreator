@@ -1,5 +1,6 @@
 package me.gca.talismancreator;
 
+import me.gca.talismancreator.commands.TalismanCommands;
 import me.gca.talismancreator.events.EventsListeners;
 import me.gca.talismancreator.managers.TalismansManager;
 import me.gca.talismancreator.messages.MessagesConfig;
@@ -39,6 +40,7 @@ public final class TalismanCreator extends JavaPlugin {
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new EventsListeners(), this);
+        getCommand("talisman").setExecutor(new TalismanCommands());
         System.out.println(ChatColor.GREEN  + "[TalismanCreator] Enabled with success!");
         this.saveDefaultConfig();
         instance = this;

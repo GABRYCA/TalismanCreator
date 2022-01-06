@@ -6,3 +6,9 @@ prefix: TalismanCreator
 authors: [ AnonymousGCA ]
 description: Make Talismans and give them to players to get cool effects and perks.
 website: https://gabryca.jar-mc.com/
+commands:
+  talisman:
+    description: Main command for TalismanCreator plugin.
+    permission: talisman.command
+    permission-message: You don't have the permission to use this command!
+    usage: /<command> <args>

@@ -177,4 +177,17 @@ public class TalismansManager {
         }
         return false;
     }
+
+    /**
+     * Get Talisman by name - title.
+     * */
+    public Talisman getTalisman(String title){
+        for (Talisman talisman : talismans){
+            if (talisman.getTitle().equalsIgnoreCase(title)){
+                return talisman;
+            }
+        }
+        // Not found.
+        return null;
+    }
 }
