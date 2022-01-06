@@ -64,14 +64,17 @@ public class TalismansManager {
                         if (pPlayer == null){
                             // Apply effect.
                             p.addPotionEffect(effect);
+                            TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success")));
                         // If the Talisman has a stronger effect than the already applied one, then apply it.
                         } else if (pPlayer.getAmplifier() < effect.getAmplifier()){
                             // Apply effect.
                             p.addPotionEffect(effect);
+                            TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success")));
                         }
                     } else {
                         // Apply effect.
                         p.addPotionEffect(effect);
+                        TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success")));
                     }
                 }
             }
@@ -82,6 +85,18 @@ public class TalismansManager {
      * Add Talisman to cache and save it to config.
      * */
     public void addTalisman(Talisman talisman){
+        if (talismans.contains(talisman)){
+            // Already existing Talisman.
+            TalismanCreator.getInstance().getLogger().warning(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Already_Existing")));
+            return;
+        }
+        for(Talisman talisman1 : talismans){
+            if (talisman1.getTitle().equalsIgnoreCase(talisman.getTitle())){
+                // Same title as already existing Talisman.
+                TalismanCreator.getInstance().getLogger().warning(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Same_Title")));
+                return;
+            }
+        }
         talismans.add(talisman);
         int free = 0;
         while (conf.getConfigurationSection("Talismans." + free) != null){
@@ -92,6 +107,7 @@ public class TalismansManager {
             TalismanCreator.getInstance().getConfig().set("Talismans." + free + ".Effects." + effect.getType().getName(), effect.getAmplifier());
         }
         TalismanCreator.getInstance().saveConfig();
+        TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Add_Success")));
         this.conf = TalismanCreator.getInstance().getConfig();
     }
 
@@ -107,9 +123,11 @@ public class TalismansManager {
                     // Found it.
                     TalismanCreator.getInstance().getConfig().set("Talismans." + key, null);
                     TalismanCreator.getInstance().saveConfig();
+                    TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Remove_Success")));
+                    this.conf = TalismanCreator.getInstance().getConfig();
+                    return;
                 }
             }
-            TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Remove_Success")));
             return;
         }
         // Not found.
@@ -129,5 +147,21 @@ public class TalismansManager {
         }
         // Not found.
         TalismanCreator.getInstance().getLogger().warning(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Not_Found")));
+    }
+
+    /**
+     * Edit old Talisman.
+     * */
+    public void editTalisman(Talisman oldTalisman, Talisman newTalisman){
+        if (!talismans.contains(oldTalisman)){
+            // There isn't such a Talisman.
+            TalismanCreator.getInstance().getLogger().warning(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Not_Found")));
+            return;
+        }
+        talismans.remove(oldTalisman);
+        removeTalisman(oldTalisman);
+        talismans.add(newTalisman);
+        addTalisman(newTalisman);
+        TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Edited_Success")));
     }
 }

@@ -15,13 +15,18 @@ public class MessagesConfig {
         put("Messages.Missing_Permission", "Sorry but you don't have the permission to use that!");
         put("Messages.Command_Not_Found", "Sorry, command not found!");
         put("Messages.Talisman_Not_Found", "Sorry, Talisman not found!");
-        put("Messages.Talisman_Remove_Success", "Talisman removed with success!");
+        put("Messages.Talisman_Add_Success", "Talisman added with success.");
+        put("Messages.Talisman_Edited_Success", "Talisman edited with success.");
+        put("Messages.Talisman_Remove_Success", "Talisman removed with success.");
+        put("Messages.Talisman_Effect_Applied_Success", "Talisman effect applied with success.");
+        put("Messages.Talisman_Already_Existing", "Already existing Talisman!");
+        put("Messages.Talisman_Same_Title", "Talisman with same title as already existing Talisman!");
         }};
 
     public MessagesConfig(){
 
         // Filepath
-        File file = new File(TalismanCreator.getInstance().getDataFolder() + "/Messages.yml");
+        File file = new File(TalismanCreator.getInstance().getDataFolder() + "/messages.yml");
 
         if (messages == null){
             try {
@@ -38,14 +43,16 @@ public class MessagesConfig {
                 e.printStackTrace();
                 return;
             }
-
+            TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat("New messages.yml saved with success!"));
         } else {
             // Load config.
             messages = YamlConfiguration.loadConfiguration(file);
+            int newMessagesCounter = 0;
             // Check if all strings are already there and if not update it, if updated then save.
             for (String i : defMessages.keySet()){
                 if (messages.get(i) == null){
                     messages.set(i, defMessages.get(i));
+                    newMessagesCounter++;
                 }
             }
             try {
@@ -54,9 +61,11 @@ public class MessagesConfig {
                 e.printStackTrace();
                 return;
             }
+            TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(newMessagesCounter  + " new messages added to the messages.yml with success!"));
         }
         // Load again the final version.
         messages = YamlConfiguration.loadConfiguration(file);
+        TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat("Config File messages.yml loaded with success!"));
     }
 
     public FileConfiguration getMessages(){

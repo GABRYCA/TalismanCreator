@@ -7,6 +7,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Talisman {
@@ -27,8 +28,21 @@ public class Talisman {
 
     public Talisman(ItemStack itemStack, List<PotionEffect> effects){
         this.xMaterial = XMaterial.matchXMaterial(itemStack);
-        this.title = itemStack.getItemMeta().getDisplayName();
-        this.lore = itemStack.getItemMeta().getLore();
+        if (itemStack.hasItemMeta()){
+            if (itemStack.getItemMeta().hasLore()) {
+                this.lore = itemStack.getItemMeta().getLore();
+            } else {
+                this.lore = Collections.singletonList(TalismanCreator.getInstance().getConfig().getString(TalismanCreator.colorFormat("Talisman.DefaultLore")));
+            }
+            if (itemStack.getItemMeta().hasDisplayName()) {
+                this.title = itemStack.getItemMeta().getDisplayName();
+            } else {
+                this.title = TalismanCreator.colorFormat("Talisman - " + itemStack.getType().name());
+            }
+        } else {
+            this.lore = Collections.singletonList(TalismanCreator.getInstance().getConfig().getString(TalismanCreator.colorFormat("Talisman.DefaultLore")));
+            this.title = TalismanCreator.colorFormat("Talisman - " + itemStack.getType().name());
+        }
         this.effects = effects;
     }
 
