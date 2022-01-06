@@ -79,7 +79,7 @@ public class TalismansManager {
             // Search in the config for the Talisman identified by his ItemStack.
             for (String key : conf.getConfigurationSection("Talismans").getKeys(false)){
                 if (conf.getItemStack("Talismans." + key + ".ItemStack") == talisman.getItemStack()){
-                    // Trovato.
+                    // Found it.
                     TalismanCreator.getInstance().getConfig().set("Talismans." + key, null);
                     TalismanCreator.getInstance().saveConfig();
                 }
