@@ -32,6 +32,9 @@ public final class TalismanCreator extends JavaPlugin {
         }
         return tempString;
     }
+    public static TalismansManager getTalismansManager(){
+        return talismansManager;
+    }
 
     @Override
     public void onEnable() {

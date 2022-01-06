@@ -4,6 +4,7 @@ import me.gca.talismancreator.TalismanCreator;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -163,5 +164,17 @@ public class TalismansManager {
         talismans.add(newTalisman);
         addTalisman(newTalisman);
         TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Edited_Success")));
+    }
+
+    /**
+     * Validate ItemStack to check if it's an existing Talisman.
+     * */
+    public boolean isTalisman(ItemStack itemStack){
+        for (Talisman talisman : talismans){
+            if (talisman.getItemStack().isSimilar(itemStack)){
+                return true;
+            }
+        }
+        return false;
     }
 }
