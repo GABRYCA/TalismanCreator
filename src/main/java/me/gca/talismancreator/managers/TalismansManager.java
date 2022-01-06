@@ -3,6 +3,7 @@ package me.gca.talismancreator.managers;
 import me.gca.talismancreator.TalismanCreator;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -33,7 +34,7 @@ public class TalismansManager {
                     PotionEffectType type = PotionEffectType.getByName(pKey);
                     // Type mustn't be null, otherwise it is invalid.
                     if (type != null){
-                        PotionEffect effect = new PotionEffect(type, -1, Integer.parseInt("Talismans." + key + ".Effects." + key));
+                        PotionEffect effect = new PotionEffect(type, Integer.MAX_VALUE, Integer.parseInt("Talismans." + key + ".Effects." + key));
                         potionEffects.add(effect);
                     }
                 }
@@ -50,7 +51,31 @@ public class TalismansManager {
      * Apply Talismans in Player Inventory.
      * */
     public void applyTalismansToPlayer(Player p){
-        //TODO
+        Inventory inv = p.getInventory();
+        // For each Talisman available
+        for (Talisman talisman : talismans){
+            // Check if the ItemStack of the Talisman is in the Player Inventory.
+            if (inv.containsAtLeast(talisman.getItemStack(), 1)){
+                // For each effect of the Talisman effect.
+                for (PotionEffect effect : talisman.getEffects()){
+                    // Check if Player already has a similar effect.
+                    if (p.hasPotionEffect(effect.getType())){
+                        PotionEffect pPlayer = p.getPotionEffect(effect.getType());
+                        if (pPlayer == null){
+                            // Apply effect.
+                            p.addPotionEffect(effect);
+                        // If the Talisman has a stronger effect than the already applied one, then apply it.
+                        } else if (pPlayer.getAmplifier() < effect.getAmplifier()){
+                            // Apply effect.
+                            p.addPotionEffect(effect);
+                        }
+                    } else {
+                        // Apply effect.
+                        p.addPotionEffect(effect);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -97,6 +122,7 @@ public class TalismansManager {
     public void removeTalisman(String title){
         for (Talisman talisman : talismans){
             if (talisman.getTitle().equalsIgnoreCase(title)){
+                // Found it.
                 removeTalisman(talisman);
                 return;
             }
