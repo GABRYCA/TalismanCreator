@@ -15,9 +15,9 @@ import java.util.List;
 public final class TalismanCreator extends JavaPlugin {
 
     public static TalismanCreator instance;
-    public static MessagesConfig mConfigInstance;
-    public static FileConfiguration messagesConfig;
-    public static TalismansManager talismansManager;
+    private static FileConfiguration messagesConfig;
+    private static TalismansManager talismansManager;
+    private static String pluginPrefix;
 
     public static TalismanCreator getInstance(){
         return instance;
@@ -37,17 +37,25 @@ public final class TalismanCreator extends JavaPlugin {
         return talismansManager;
     }
 
+    public static FileConfiguration getMessagesConfig() {
+        return messagesConfig;
+    }
+
+    public static String getPluginPrefix() {
+        return pluginPrefix;
+    }
+
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new EventsListeners(), this);
         getCommand("talisman").setExecutor(new TalismanCommands());
-        System.out.println(ChatColor.GREEN  + "[TalismanCreator] Enabled with success!");
+        getLogger().info(ChatColor.GREEN + "Enabled with success!");
         this.saveDefaultConfig();
         instance = this;
         this.saveConfig();
-        mConfigInstance = new MessagesConfig();
-        messagesConfig = mConfigInstance.getMessages();
+        messagesConfig = new MessagesConfig().getMessages();
         talismansManager = new TalismansManager();
+        pluginPrefix = getConfig().getString("Plugin.PluginPrefix");
     }
 
     @Override

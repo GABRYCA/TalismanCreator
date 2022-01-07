@@ -1,3 +1,6 @@
 Talisman:
   DefaultLore: "A Talisman, this must do something..."
+Plugin:
+  PluginPrefix: "&4[&6TalismanCreator&4]&f"
+  language: en
 Talismans:

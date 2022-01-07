@@ -11,4 +11,8 @@ commands:
     description: Main command for TalismanCreator plugin.
     permission: talisman.command
     permission-message: You don't have the permission to use this command!
-    usage: /<command> <args>
+    usage: /<command> [gui|add|remove]
+permissions:
+  talisman.command:
+    description: Allows usage of talisman commands.
+    default: op

@@ -1,9 +1,12 @@
 plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'java'
 }
 
 group = 'me.gca'
 version = '0.1'
+
+apply plugin: "com.github.johnrengelman.shadow"
 
 repositories {
     mavenCentral()
@@ -15,11 +18,10 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
-    maven { url = 'https://mvnrepository.com/artifact/com.github.cryptomorin' }
 }
 
 dependencies {
-    implementation 'com.github.cryptomorin:XSeries:8.5.0.1'
+    implementation 'com.github.cryptomorin:XSeries:8.6.0'
     compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
 }
 
@@ -46,4 +48,13 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+shadowJar {
+    archiveName = "TalismanCreator-" + version.toString() + ".jar"
+    relocate 'com.cryptomorin.xseries', 'me.gca.talismancreator.utils'
+}
+
+artifacts {
+    archives shadowJar
 }

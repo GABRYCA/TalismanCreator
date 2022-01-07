@@ -15,7 +15,7 @@ public class TalismansManager {
 
     private List<Talisman> talismans = new ArrayList<>();
     private FileConfiguration conf = TalismanCreator.getInstance().getConfig();
-    private FileConfiguration messages = TalismanCreator.messagesConfig;
+    private final FileConfiguration messages = TalismanCreator.getMessagesConfig();
 
     public TalismansManager(){
         int counter = 0;
@@ -35,7 +35,7 @@ public class TalismansManager {
                     PotionEffectType type = PotionEffectType.getByName(pKey);
                     // Type mustn't be null, otherwise it is invalid.
                     if (type != null){
-                        PotionEffect effect = new PotionEffect(type, Integer.MAX_VALUE, Integer.parseInt("Talismans." + key + ".Effects." + key));
+                        PotionEffect effect = new PotionEffect(type, Integer.MAX_VALUE, conf.getInt("Talismans." + key + ".Effects." + pKey));
                         potionEffects.add(effect);
                     }
                 }
@@ -103,7 +103,7 @@ public class TalismansManager {
         while (conf.getConfigurationSection("Talismans." + free) != null){
             free++;
         }
-        TalismanCreator.getInstance().getConfig().set("Talismans." + free + ".ItemStack", talisman.getItemStack().serialize());
+        TalismanCreator.getInstance().getConfig().set("Talismans." + free + ".ItemStack", talisman.getItemStack());
         for (PotionEffect effect : talisman.getEffects()){
             TalismanCreator.getInstance().getConfig().set("Talismans." + free + ".Effects." + effect.getType().getName(), effect.getAmplifier());
         }
@@ -120,7 +120,8 @@ public class TalismansManager {
             talismans.remove(talisman);
             // Search in the config for the Talisman identified by his ItemStack.
             for (String key : conf.getConfigurationSection("Talismans").getKeys(false)){
-                if (conf.getItemStack("Talismans." + key + ".ItemStack") == talisman.getItemStack()){
+                ItemStack itemStack = conf.getItemStack("Talismans." + key + ".ItemStack");
+                if (itemStack != null && itemStack.isSimilar(talisman.getItemStack())) {
                     // Found it.
                     TalismanCreator.getInstance().getConfig().set("Talismans." + key, null);
                     TalismanCreator.getInstance().saveConfig();
