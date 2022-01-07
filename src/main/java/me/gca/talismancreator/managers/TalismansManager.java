@@ -85,25 +85,25 @@ public class TalismansManager {
      * Apply single talisman effect if Talisman is valid.
      * */
     public void applyTalismanItem(Player p, ItemStack itemStack){
-        if (isTalisman(itemStack)){
-            for (Talisman talisman : talismans){
-                // Check if the ItemStack of the Talisman is in the Player Inventory.
-                // For each effect of the Talisman effect.
-                for (PotionEffect effect : talisman.getEffects()){
-                    // Check if Player already has a similar effect.
-                    if (p.hasPotionEffect(effect.getType())){
-                        PotionEffect pPlayer = p.getPotionEffect(effect.getType());
-                        if (pPlayer.getAmplifier() < effect.getAmplifier()){
-                            // Apply effect.
-                            p.addPotionEffect(effect);
-                            TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success") + " [" + p.getName() + "-" + effect.toString() + "]"));
-                        }
-                    } else {
-                        // Apply effect.
-                        p.addPotionEffect(effect);
-                        TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success") + " [" + p.getName() + "-" + effect.toString() + "]"));
-                    }
+        Talisman talisman = getTalisman(itemStack);
+        if (talisman == null){
+            return;
+        }
+        // Check if the ItemStack of the Talisman is in the Player Inventory.
+        // For each effect of the Talisman effect.
+        for (PotionEffect effect : talisman.getEffects()){
+            // Check if Player already has a similar effect.
+            if (p.hasPotionEffect(effect.getType())){
+                PotionEffect pPlayer = p.getPotionEffect(effect.getType());
+                if (pPlayer.getAmplifier() < effect.getAmplifier()){
+                    // Apply effect.
+                    p.addPotionEffect(effect);
+                    TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success") + " [" + p.getName() + "-" + effect.toString() + "]"));
                 }
+            } else {
+                // Apply effect.
+                p.addPotionEffect(effect);
+                TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success") + " [" + p.getName() + "-" + effect.toString() + "]"));
             }
         }
     }
@@ -211,6 +211,19 @@ public class TalismansManager {
     public Talisman getTalisman(String title){
         for (Talisman talisman : talismans){
             if (talisman.getTitle().equalsIgnoreCase(title)){
+                return talisman;
+            }
+        }
+        // Not found.
+        return null;
+    }
+
+    /**
+     * Get Talisman by ItemStack.
+     * */
+    public Talisman getTalisman(ItemStack itemStack){
+        for (Talisman talisman : talismans){
+            if (talisman.getItemStack().isSimilar(itemStack)){
                 return talisman;
             }
         }

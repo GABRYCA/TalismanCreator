@@ -1,5 +1,6 @@
 package me.gca.talismancreator.events;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class EventsListeners implements Listener {
@@ -37,6 +39,14 @@ public class EventsListeners implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         TalismanCreator.getTalismansManager().applyTalismansToPlayer(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerConsumeEvent(PlayerItemConsumeEvent e){
+        // If user drinks milk, reapply effects
+        if (e.getItem().isSimilar(XMaterial.MILK_BUCKET.parseItem())){
+            TalismanCreator.getTalismansManager().applyTalismansToPlayer(e.getPlayer());
+        }
     }
 }
 
