@@ -44,7 +44,7 @@ public class EventsListeners implements Listener {
     @EventHandler
     public void onPlayerConsumeEvent(PlayerItemConsumeEvent e){
         // If user drinks milk, reapply effects
-        if (e.getItem().isSimilar(XMaterial.MILK_BUCKET.parseItem())){
+        if (e.getItem().getType().equals(XMaterial.MILK_BUCKET.parseMaterial())){
             TalismanCreator.getTalismansManager().applyTalismansToPlayer(e.getPlayer());
         }
     }
