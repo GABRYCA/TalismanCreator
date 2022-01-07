@@ -3,11 +3,13 @@ package me.gca.talismancreator.commands;
 import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
 import me.gca.talismancreator.managers.Talisman;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -40,14 +42,14 @@ public class TalismanCommands implements CommandExecutor {
                 // Main GUI and admin stuff.
             }
             case "add" -> {
-                if (args[3] == null){
+                if (args.length <= 3){
                     sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &eMissing parameters:"));
-                    if (args[1] == null){
-                        sender.sendMessage(TalismanCreator.colorFormat("&f - &c <Material> <Effect> <Title>"));
-                    } else  if (args[2] == null){
-                        sender.sendMessage(TalismanCreator.colorFormat("&f - &c <Effect> <Title>"));
-                    } else if (args[3] == null){
-                        sender.sendMessage(TalismanCreator.colorFormat("&f - &c <Title>"));
+                    if (args.length == 1){
+                        sender.sendMessage(TalismanCreator.colorFormat("&f - &c<Material> <Effect> <Title>"));
+                    } else  if (args.length == 2){
+                        sender.sendMessage(TalismanCreator.colorFormat("&f - &c<Effect> <Title>"));
+                    } else {
+                        sender.sendMessage(TalismanCreator.colorFormat("&f - &c<Title>"));
                     }
                     return true;
                 }
@@ -63,10 +65,10 @@ public class TalismanCommands implements CommandExecutor {
                 }
                 StringBuilder titleBuilder = new StringBuilder();
                 for (int i = 3; i < args.length; i++){
-                    titleBuilder.append(args[i]);
                     if (i != 3){
                         titleBuilder.append(" ");
                     }
+                    titleBuilder.append(args[i]);
                 }
                 String title = titleBuilder.toString();
                 if (TalismanCreator.getTalismansManager().getTalisman(title) != null){
@@ -80,17 +82,17 @@ public class TalismanCommands implements CommandExecutor {
                 return true;
             }
             case "remove" -> {
-                if (args[1] == null){
+                if (args.length < 2){
                     sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &eMissing parameters:"));
                     sender.sendMessage(TalismanCreator.colorFormat("&f - &c <Title>"));
                     return true;
                 }
                 StringBuilder stringBuilder = new StringBuilder();
                 for (int i = 1; i < args.length; i++){
-                    stringBuilder.append(args[i]);
                     if (i != 1){
                         stringBuilder.append(" ");
                     }
+                    stringBuilder.append(args[i]);
                 }
                 String title = stringBuilder.toString();
                 Talisman talisman = TalismanCreator.getTalismansManager().getTalisman(title);
@@ -103,14 +105,72 @@ public class TalismanCommands implements CommandExecutor {
                 return true;
             }
             case "edit" -> {
+                if (args.length < 2){
+                    sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &eMissing parameters: "));
+                    sender.sendMessage(TalismanCreator.colorFormat("&f - &6<Title>"));
+                    return true;
+                }
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 2; i < args.length; i++){
+                    if (i != 2){
+                        stringBuilder.append(" ");
+                    }
+                    stringBuilder.append(args[i]);
+                }
+                String title = stringBuilder.toString();
+                Talisman talisman = TalismanCreator.getTalismansManager().getTalisman(title);
+                if (talisman == null){
+                    sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &c" + messages.getString("Messages.Talisman_Not_Found")));
+                    return true;
+                }
                 //TODO
-                // Check if title is valid, and open the edit admin GUI.
+                // Open Talisman manager GUI.
                 return true;
             }
             case "give" -> {
-                //TODO
-                // Give Talisman to Player.
+                if (args.length <= 2){
+                    sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &eMissing parameters: "));
+                    if (args.length == 1){
+                        sender.sendMessage(TalismanCreator.colorFormat( "&f - &c<Player> <Title>"));
+                    } else {
+                        sender.sendMessage(TalismanCreator.colorFormat( "&f - &c<Title>"));
+                    }
+                    return true;
+                }
+                Player pReceiver = Bukkit.getPlayer(args[1]);
+                if (pReceiver == null){
+                    sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &c" + messages.getString("Messages.Player_Not_Found")));
+                    return true;
+                }
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 2; i < args.length; i++){
+                    if (i != 2){
+                        stringBuilder.append(" ");
+                    }
+                    stringBuilder.append(args[i]);
+                }
+                String title = stringBuilder.toString();
+                Talisman talisman = TalismanCreator.getTalismansManager().getTalisman(title);
+                if (talisman == null){
+                    sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &c" + messages.getString("Messages.Talisman_Not_Found")));
+                    return true;
+                }
+                ItemStack talismanItem = talisman.getItemStack();
+                talismanItem.setAmount(1);
+                pReceiver.getInventory().addItem(talismanItem);
+                sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Give_Success")));
                 return true;
+            }
+            case "list" -> {
+                List<Talisman> talismans = TalismanCreator.getTalismansManager().getTalismans();
+                if (talismans.isEmpty()){
+                    sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.No_Talismans")));
+                    return true;
+                }
+                sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + "&6Talismans:"));
+                for (Talisman talisman : talismans){
+                    sender.sendMessage(TalismanCreator.colorFormat("&f - &6" + talisman.getTitle()));
+                }
             }
             default -> {
                 sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &c" + messages.getString("Messages.Command_Not_Found")));
@@ -123,10 +183,11 @@ public class TalismanCommands implements CommandExecutor {
 
     public void commandList(CommandSender sender){
         sender.sendMessage(TalismanCreator.colorFormat("&6" + TalismanCreator.getPluginPrefix() + ":"));
-        sender.sendMessage(TalismanCreator.colorFormat("&f - &6 /talisman gui"));
-        sender.sendMessage(TalismanCreator.colorFormat("&f - &6 /talisman add <Material> <Effect> <Title>"));
-        sender.sendMessage(TalismanCreator.colorFormat("&f - &6 /talisman remove <Title>"));
-        sender.sendMessage(TalismanCreator.colorFormat("&f - &6 /talisman edit <Title>"));
-        sender.sendMessage(TalismanCreator.colorFormat("&f - &6 /talisman give <Title>"));
+        sender.sendMessage(TalismanCreator.colorFormat("&f - &6/talisman gui"));
+        sender.sendMessage(TalismanCreator.colorFormat("&f - &6/talisman add <Material> <Effect> <Title>"));
+        sender.sendMessage(TalismanCreator.colorFormat("&f - &6/talisman remove <Title>"));
+        sender.sendMessage(TalismanCreator.colorFormat("&f - &6/talisman edit <Title>"));
+        sender.sendMessage(TalismanCreator.colorFormat("&f - &6/talisman give <Player> <Title>"));
+        sender.sendMessage(TalismanCreator.colorFormat("&f - &6/talisman list"));
     }
 }

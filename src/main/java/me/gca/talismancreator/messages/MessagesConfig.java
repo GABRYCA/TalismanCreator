@@ -24,7 +24,11 @@ public class MessagesConfig {
         put("Messages.Talisman_Effect_Applied_Success", "Talisman effect applied with success.");
         put("Messages.Talisman_Already_Existing", "Already existing Talisman with same title!");
         put("Messages.Talisman_Same_Title", "Talisman with same title as already existing Talisman!");
+        put("Messages.Talisman_Give_Success", "Talisman given with success!");
+        put("Messages.No_Talismans", "There aren't Talismans available.");
         put("Messages.Player_Only", "You can't run this command, hi console!");
+        put("Messages.Missing_Player_Name", "Please specify Player name.");
+        put("Messages.Player_Not_Found", "Player not found, it may be offline!");
         }};
 
     /*private HashMap<String, String> customMessages = new HashMap<>() {{

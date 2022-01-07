@@ -52,6 +52,10 @@ public class TalismansManager {
      * Apply Talismans in Player Inventory.
      * */
     public void applyTalismansToPlayer(Player p){
+        // Remove all active potion effects.
+        for (PotionEffect effect : p.getActivePotionEffects()) {
+            p.removePotionEffect(effect.getType());
+        }
         Inventory inv = p.getInventory();
         // For each Talisman available
         for (Talisman talisman : talismans){
@@ -62,20 +66,42 @@ public class TalismansManager {
                     // Check if Player already has a similar effect.
                     if (p.hasPotionEffect(effect.getType())){
                         PotionEffect pPlayer = p.getPotionEffect(effect.getType());
-                        if (pPlayer == null){
+                        if (pPlayer.getAmplifier() < effect.getAmplifier()){
                             // Apply effect.
                             p.addPotionEffect(effect);
-                            TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success")));
-                        // If the Talisman has a stronger effect than the already applied one, then apply it.
-                        } else if (pPlayer.getAmplifier() < effect.getAmplifier()){
-                            // Apply effect.
-                            p.addPotionEffect(effect);
-                            TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success")));
+                            TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success") + " [" + p.getName() + "-" + effect.toString() + "]"));
                         }
                     } else {
                         // Apply effect.
                         p.addPotionEffect(effect);
-                        TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success")));
+                        TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success") + " [" + p.getName() + "-" + effect.toString() + "]"));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Apply single talisman effect if Talisman is valid.
+     * */
+    public void applyTalismanItem(Player p, ItemStack itemStack){
+        if (isTalisman(itemStack)){
+            for (Talisman talisman : talismans){
+                // Check if the ItemStack of the Talisman is in the Player Inventory.
+                // For each effect of the Talisman effect.
+                for (PotionEffect effect : talisman.getEffects()){
+                    // Check if Player already has a similar effect.
+                    if (p.hasPotionEffect(effect.getType())){
+                        PotionEffect pPlayer = p.getPotionEffect(effect.getType());
+                        if (pPlayer.getAmplifier() < effect.getAmplifier()){
+                            // Apply effect.
+                            p.addPotionEffect(effect);
+                            TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success") + " [" + p.getName() + "-" + effect.toString() + "]"));
+                        }
+                    } else {
+                        // Apply effect.
+                        p.addPotionEffect(effect);
+                        TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success") + " [" + p.getName() + "-" + effect.toString() + "]"));
                     }
                 }
             }
@@ -190,5 +216,12 @@ public class TalismansManager {
         }
         // Not found.
         return null;
+    }
+
+    /**
+     * Get Talisman List.
+     * */
+    public List<Talisman> getTalismans(){
+        return talismans;
     }
 }

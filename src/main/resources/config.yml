@@ -1,5 +1,5 @@
 Talisman:
-  DefaultLore: "A Talisman, this must do something..."
+  DefaultLore: "A Talisman, it must do something..."
 Plugin:
   PluginPrefix: "&4[&6TalismanCreator&4]&f"
   language: en

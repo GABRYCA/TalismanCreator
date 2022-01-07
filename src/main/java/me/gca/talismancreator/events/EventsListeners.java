@@ -15,9 +15,7 @@ public class EventsListeners implements Listener {
     public void onBlockPickup(EntityPickupItemEvent e){
         // Run only if is Player, for now I don't want other entities to be able to use Talismans.
         if (e.getEntity() instanceof Player){
-            if (TalismanCreator.getTalismansManager().isTalisman(e.getItem().getItemStack())){
-                TalismanCreator.getTalismansManager().applyTalismansToPlayer((Player) e.getEntity());
-            }
+            TalismanCreator.getTalismansManager().applyTalismanItem((Player) e.getEntity(), e.getItem().getItemStack());
         }
     }
 
