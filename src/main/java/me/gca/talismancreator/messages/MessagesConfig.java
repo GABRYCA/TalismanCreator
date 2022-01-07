@@ -27,6 +27,21 @@ public class MessagesConfig {
         put("Messages.Player_Only", "You can't run this command, hi console!");
         }};
 
+    /*private HashMap<String, String> customMessages = new HashMap<>() {{
+        YamlConfiguration conf = new YamlConfiguration();
+        conf = YamlConfiguration.loadConfiguration(new File("messages_" + locale + ".yml"));
+        put("Messages.Missing_Permission", "Sorry but you don't have the permission to use that!");
+        put("Messages.Command_Not_Found", "Sorry, command not found!");
+        put("Messages.Talisman_Not_Found", "Sorry, Talisman not found!");
+        put("Messages.Talisman_Add_Success", "Talisman added with success.");
+        put("Messages.Talisman_Edited_Success", "Talisman edited with success.");
+        put("Messages.Talisman_Remove_Success", "Talisman removed with success.");
+        put("Messages.Talisman_Effect_Applied_Success", "Talisman effect applied with success.");
+        put("Messages.Talisman_Already_Existing", "Already existing Talisman!");
+        put("Messages.Talisman_Same_Title", "Talisman with same title as already existing Talisman!");
+        put("Messages.Player_Only", "You can't run this command, hi console!");
+    }};*/
+
     public MessagesConfig(){
 
         // Filepath
