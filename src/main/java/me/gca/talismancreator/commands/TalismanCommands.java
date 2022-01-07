@@ -158,6 +158,7 @@ public class TalismanCommands implements CommandExecutor {
                 ItemStack talismanItem = talisman.getItemStack();
                 talismanItem.setAmount(1);
                 pReceiver.getInventory().addItem(talismanItem);
+                TalismanCreator.getTalismansManager().applyTalismansToPlayer(pReceiver);
                 sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Give_Success")));
                 return true;
             }
@@ -167,10 +168,11 @@ public class TalismanCommands implements CommandExecutor {
                     sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.No_Talismans")));
                     return true;
                 }
-                sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + "&6Talismans:"));
+                sender.sendMessage(TalismanCreator.colorFormat( "&6Talismans:"));
                 for (Talisman talisman : talismans){
                     sender.sendMessage(TalismanCreator.colorFormat("&f - &6" + talisman.getTitle()));
                 }
+                return true;
             }
             default -> {
                 sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &c" + messages.getString("Messages.Command_Not_Found")));
