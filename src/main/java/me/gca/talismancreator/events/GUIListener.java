@@ -24,11 +24,7 @@ public class GUIListener implements Listener {
     private static final Configuration messages = TalismanCreator.getMessagesConfig();
     private static final String pluginPrefix = TalismanCreator.getPluginPrefix();
 
-    public GUIListener(){
-        if (instance == null) {
-            instance = new GUIListener();
-        }
-    }
+    public GUIListener(){}
 
     public static GUIListener getInstance(){
         if (instance == null){
