@@ -48,16 +48,16 @@ public final class TalismanCreator extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        Bukkit.getPluginManager().registerEvents(new EventsListeners(), this);
-        Bukkit.getPluginManager().registerEvents(new GUIListener(), this);
-        getCommand("talisman").setExecutor(new TalismanCommands());
-        getLogger().info(ChatColor.GREEN + "Enabled with success!");
         this.saveDefaultConfig();
         instance = this;
         this.saveConfig();
         messagesConfig = new MessagesConfig().getMessages();
         talismansManager = new TalismansManager();
         pluginPrefix = getConfig().getString("Plugin.PluginPrefix");
+        Bukkit.getPluginManager().registerEvents(new EventsListeners(), this);
+        Bukkit.getPluginManager().registerEvents(new GUIListener(), this);
+        getCommand("talisman").setExecutor(new TalismanCommands());
+        getLogger().info(ChatColor.GREEN + "Enabled with success!");
     }
 
     @Override

@@ -56,7 +56,7 @@ public class SpigotGUIComponents {
             meta = XMaterial.BARRIER.parseItem().getItemMeta();
         }
 
-        return getItemStack(item, lore, TalismanCreator.colorFormat(display), meta);
+        return getItemStack(item, TalismanCreator.colorFormat(lore), TalismanCreator.colorFormat(display), meta);
     }
 
     /**
@@ -73,7 +73,7 @@ public class SpigotGUIComponents {
             try {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             } catch (NoClassDefFoundError ignored){}
-            meta.setLore(lore);
+            meta.setLore(TalismanCreator.colorFormat(lore));
             item.setItemMeta(meta);
         }
 
@@ -87,7 +87,7 @@ public class SpigotGUIComponents {
      *
      * @param lores
      * */
-    protected List<String> createLore( String... lores ) {
+    protected List<String> createLore(String... lores) {
         List<String> results = new ArrayList<>();
         for (String lore : lores) {
             results.add(TalismanCreator.colorFormat(lore) );

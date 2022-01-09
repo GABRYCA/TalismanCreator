@@ -116,8 +116,8 @@ public class TalismanCommands implements CommandExecutor {
                     return true;
                 }
                 StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 2; i < args.length; i++){
-                    if (i != 2){
+                for (int i = 1; i < args.length; i++){
+                    if (i != 1){
                         stringBuilder.append(" ");
                     }
                     stringBuilder.append(args[i]);

@@ -2,6 +2,7 @@ package me.gca.talismancreator.gui;
 
 import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
+import me.gca.talismancreator.TalismanCreator;
 import me.gca.talismancreator.events.GUIListener;
 import me.gca.talismancreator.gui.util.SpigotGUIComponents;
 import me.gca.talismancreator.managers.Talisman;
@@ -27,7 +28,7 @@ public class TalismanManageItem extends SpigotGUIComponents {
         ItemStack talismanHead = createButton(SkullUtils.getSkull(p.getUniqueId()), createLore("&8Click to choose."), "&6Choose from Heads");
 
         // Create Inventory.
-        Inventory inv = Bukkit.createInventory(null, 24, "&6Talisman Manage Item");
+        Inventory inv = Bukkit.createInventory(null, size, TalismanCreator.colorFormat("&6Talisman Manage Item"));
 
         // Add Buttons to Inventory.
         inv.setItem(size - 1, getCloseGUIButton());

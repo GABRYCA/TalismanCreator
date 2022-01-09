@@ -1,6 +1,7 @@
 package me.gca.talismancreator.gui;
 
 import com.cryptomorin.xseries.XMaterial;
+import me.gca.talismancreator.TalismanCreator;
 import me.gca.talismancreator.events.GUIListener;
 import me.gca.talismancreator.gui.util.SpigotGUIComponents;
 import me.gca.talismancreator.managers.Talisman;
@@ -27,7 +28,7 @@ public class TalismanEditGUI extends SpigotGUIComponents {
         ItemStack talismanEffects = createButton(XMaterial.BREWING_STAND.parseItem(), createLore("&8Click to open."), "&6Manage Lore");
 
         // Create Inventory.
-        Inventory inv = Bukkit.createInventory(null, 24, "&6Talisman Edit");
+        Inventory inv = Bukkit.createInventory(null, size, TalismanCreator.colorFormat("&6Talisman Edit"));
 
         // Add Buttons to Inventory.
         inv.setItem(size - 1, getCloseGUIButton());

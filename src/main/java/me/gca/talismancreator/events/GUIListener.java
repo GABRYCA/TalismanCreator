@@ -2,8 +2,8 @@ package me.gca.talismancreator.events;
 
 import me.gca.talismancreator.TalismanCreator;
 import me.gca.talismancreator.gui.TalismanManageItem;
-import me.gca.talismancreator.gui.util.SpigotGUIComponents;
 import me.gca.talismancreator.managers.Talisman;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -78,10 +78,9 @@ public class GUIListener implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            String title = e.getView().getTitle();
-            String buttonTitle = button.getItemMeta().getDisplayName();
-
-            if (buttonTitle.equalsIgnoreCase("&cClose")){
+            String title = e.getView().getTitle().substring(2);
+            String buttonTitle = button.getItemMeta().getDisplayName().substring(2);
+            if (buttonTitle.equalsIgnoreCase("Close")){
                 p.closeInventory();
                 p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.GUI_Close_Success")));
                 e.setCancelled(true);
@@ -91,7 +90,7 @@ public class GUIListener implements Listener {
             // Switch between GUI titles.
             switch (title){
 
-                case "&6Talisman Edit" -> {
+                case "Talisman Edit" -> {
 
                     if (talismanEditing.get(p) == null){
                         p.closeInventory();
@@ -100,13 +99,13 @@ public class GUIListener implements Listener {
                     }
 
                     switch (buttonTitle){
-                        case "&6Manage Item" -> {
+                        case "Manage Item" -> {
                             new TalismanManageItem(p, talismanEditing.get(p));
                         }
-                        case "&6Manage Lore" -> {
+                        case "Manage Lore" -> {
                             // TODO Open Lore Manage GUI.
                         }
-                        case "&6Manage effects" -> {
+                        case "Manage effects" -> {
                             // TODO Open Effects Manage GUI.
                         }
                         default -> {
@@ -116,7 +115,7 @@ public class GUIListener implements Listener {
                     return;
                 }
 
-                case "&6Talisman Manage Item" -> {
+                case "Talisman Manage Item" -> {
 
                     if (talismanEditing.get(p) == null){
                         p.closeInventory();
@@ -125,10 +124,10 @@ public class GUIListener implements Listener {
                     }
 
                     switch (buttonTitle){
-                        case "&6Choose from Items" ->{
+                        case "Choose from Items" ->{
                             // TODO Open GUI showing all items with pages.
                         }
-                        case "&6Choose from Heads" -> {
+                        case "Choose from Heads" -> {
                             // TODO Open GUI showing some random Heads with pages.
                         }
                         default -> {
