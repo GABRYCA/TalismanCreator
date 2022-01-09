@@ -1,6 +1,8 @@
 package me.gca.talismancreator.events;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
+import me.gca.talismancreator.gui.TalismanItemsGUI;
 import me.gca.talismancreator.gui.TalismanManageItem;
 import me.gca.talismancreator.managers.Talisman;
 import org.bukkit.ChatColor;
@@ -11,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -125,7 +128,7 @@ public class GUIListener implements Listener {
 
                     switch (buttonTitle){
                         case "Choose from Items" ->{
-                            // TODO Open GUI showing all items with pages.
+                            new TalismanItemsGUI(p, talismanEditing.get(p), 0);
                         }
                         case "Choose from Heads" -> {
                             // TODO Open GUI showing some random Heads with pages.
@@ -134,6 +137,33 @@ public class GUIListener implements Listener {
                             e.setCancelled(true);
                         }
                     }
+                }
+
+                case "Talisman Items" -> {
+                    if (talismanEditing.get(p) == null){
+                        p.closeInventory();
+                        e.setCancelled(true);
+                        return;
+                    }
+
+                    String[] parts = buttonTitle.split(" ");
+                    if (parts.length == 1){
+                        Talisman oldTalisman = talismanEditing.get(p);
+                        ItemMeta meta = oldTalisman.getItemStack().getItemMeta();
+                        ItemStack itemClicked = e.getCurrentItem();
+                        itemClicked.setItemMeta(meta);
+                        Talisman newTalisman = new Talisman(itemClicked, oldTalisman.getEffects());
+                        TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
+                        p.closeInventory();
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Add_Success")));
+                    } else if (parts.length == 2){
+                        if (parts[0].equalsIgnoreCase("Previous")){
+                            new TalismanItemsGUI(p, talismanEditing.get(p), Integer.parseInt(parts[1]));
+                        } else if (parts[0].equalsIgnoreCase("Next")){
+                            new TalismanItemsGUI(p, talismanEditing.get(p), Integer.parseInt(parts[1]));
+                        }
+                    }
+                    e.setCancelled(true);
                 }
 
                 default -> {
