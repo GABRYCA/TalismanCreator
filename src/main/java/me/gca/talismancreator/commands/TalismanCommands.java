@@ -2,6 +2,7 @@ package me.gca.talismancreator.commands;
 
 import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
+import me.gca.talismancreator.gui.TalismanEditGUI;
 import me.gca.talismancreator.managers.Talisman;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -105,6 +106,10 @@ public class TalismanCommands implements CommandExecutor {
                 return true;
             }
             case "edit" -> {
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &c" + messages.getString("Messages.Player_Only")));
+                    return true;
+                }
                 if (args.length < 2){
                     sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &eMissing parameters: "));
                     sender.sendMessage(TalismanCreator.colorFormat("&f - &6<Title>"));
@@ -123,8 +128,7 @@ public class TalismanCommands implements CommandExecutor {
                     sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &c" + messages.getString("Messages.Talisman_Not_Found")));
                     return true;
                 }
-                //TODO
-                // Open Talisman manager GUI.
+                new TalismanEditGUI((Player) sender, talisman);
                 return true;
             }
             case "give" -> {
