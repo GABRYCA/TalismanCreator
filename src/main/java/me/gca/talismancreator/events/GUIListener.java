@@ -1,11 +1,9 @@
 package me.gca.talismancreator.events;
 
-import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
 import me.gca.talismancreator.gui.TalismanItemsGUI;
 import me.gca.talismancreator.gui.TalismanManageItem;
 import me.gca.talismancreator.managers.Talisman;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -103,7 +101,9 @@ public class GUIListener implements Listener {
 
                     switch (buttonTitle){
                         case "Manage Item" -> {
+                            Talisman talisman = talismanEditing.get(p);
                             new TalismanManageItem(p, talismanEditing.get(p));
+                            addTalismanEditing(p, talisman);
                         }
                         case "Manage Lore" -> {
                             // TODO Open Lore Manage GUI.
@@ -121,6 +121,7 @@ public class GUIListener implements Listener {
                 case "Talisman Manage Item" -> {
 
                     if (talismanEditing.get(p) == null){
+                        p.sendMessage("Null talisman");
                         p.closeInventory();
                         e.setCancelled(true);
                         return;
@@ -128,7 +129,9 @@ public class GUIListener implements Listener {
 
                     switch (buttonTitle){
                         case "Choose from Items" ->{
+                            Talisman talisman = talismanEditing.get(p);
                             new TalismanItemsGUI(p, talismanEditing.get(p), 0);
+                            addTalismanEditing(p, talisman);
                         }
                         case "Choose from Heads" -> {
                             // TODO Open GUI showing some random Heads with pages.
@@ -157,10 +160,13 @@ public class GUIListener implements Listener {
                         p.closeInventory();
                         p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Add_Success")));
                     } else if (parts.length == 2){
-                        if (parts[0].equalsIgnoreCase("Previous")){
+                        Talisman talisman = talismanEditing.get(p);
+                        if (parts[0].equalsIgnoreCase("Previous-Page")){
                             new TalismanItemsGUI(p, talismanEditing.get(p), Integer.parseInt(parts[1]));
-                        } else if (parts[0].equalsIgnoreCase("Next")){
+                            addTalismanEditing(p, talisman);
+                        } else if (parts[0].equalsIgnoreCase("Next-Page")){
                             new TalismanItemsGUI(p, talismanEditing.get(p), Integer.parseInt(parts[1]));
+                            addTalismanEditing(p, talisman);
                         }
                     }
                     e.setCancelled(true);

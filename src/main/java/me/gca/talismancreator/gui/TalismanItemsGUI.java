@@ -22,8 +22,8 @@ public class TalismanItemsGUI extends SpigotGUIComponents {
         GUIListener.getInstance().addTalismanEditing(p, talisman);
 
         // Create Buttons
-        ItemStack previousPage = createButton(XMaterial.BOOK.parseMaterial(), 1, createLore("&8Previous page"), "&6Previous-page " + (startingPoint - 45));
-        ItemStack nextPage = createButton(XMaterial.BOOK.parseMaterial(), 1, createLore("&8Next page"), "&6Next-page " + (startingPoint + 45));
+        ItemStack previousPage = createButton(XMaterial.BOOK.parseMaterial(), 1, createLore("&8Previous page"), "&6Previous-Page " + (startingPoint - 45));
+        ItemStack nextPage = createButton(XMaterial.BOOK.parseMaterial(), 1, createLore("&8Next page"), "&6Next-Page " + (startingPoint + 45));
 
         // Create Inventory.
         Inventory inv = Bukkit.createInventory(null, size, TalismanCreator.colorFormat("&6Talisman Items"));
