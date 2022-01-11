@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 public class TalismanEffectsGUI extends SpigotGUIComponents {
 
@@ -30,9 +31,9 @@ public class TalismanEffectsGUI extends SpigotGUIComponents {
         Inventory inv = Bukkit.createInventory(null, size, TalismanCreator.colorFormat("&6Talisman Effects"));
 
         int counter = 0;
-        for (XPotion xPotion : XPotion.values()){
+        for (PotionEffectType potionEffectType : PotionEffectType.values()){
             if (counter > startingPoint){
-                inv.addItem(createButton(XMaterial.POTION.parseItem(), createLore("&8Click to choose"), xPotion.name()));
+                inv.addItem(createButton(XMaterial.POTION.parseItem(), createLore("&8Click to choose"), potionEffectType.toString()));
             }
             if (counter == startingPoint + 45){
                 break;
