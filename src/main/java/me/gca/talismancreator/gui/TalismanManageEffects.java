@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class TalismanManageItem extends SpigotGUIComponents {
+public class TalismanManageEffects extends SpigotGUIComponents {
 
-    public TalismanManageItem(Player p, Talisman talisman){
+    public TalismanManageEffects(Player p, Talisman talisman){
         // Check conditions.
         if (p == null || talisman == null){
             return;
@@ -24,11 +24,11 @@ public class TalismanManageItem extends SpigotGUIComponents {
         GUIListener.getInstance().addTalismanEditing(p, talisman);
 
         // Create Buttons
-        ItemStack talismanItem = createButton(XMaterial.TOTEM_OF_UNDYING.parseItem(), createLore("&8Click to choose."), "&6Choose from Items");
-        ItemStack talismanHead = createButton(SkullUtils.getSkull(p.getUniqueId()), createLore("&6&lComing Soon!"/*,"&8Click to choose."*/), "&6Choose from Heads");
+        ItemStack talismanItem = createButton(XMaterial.POTION.parseItem(), createLore("&8Click to manage"), "&6Remove effects");
+        ItemStack talismanHead = createButton(XMaterial.BREAD.parseItem(), createLore("&8Click to manage"), "&6Add effect");
 
         // Create Inventory.
-        Inventory inv = Bukkit.createInventory(null, size, TalismanCreator.colorFormat("&6Talisman Manage Item"));
+        Inventory inv = Bukkit.createInventory(null, size, TalismanCreator.colorFormat("&6Talisman Manage Effects"));
 
         // Add Buttons to Inventory.
         inv.setItem(size - 1, getCloseGUIButton());

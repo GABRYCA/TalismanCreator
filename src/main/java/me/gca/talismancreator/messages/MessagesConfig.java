@@ -17,6 +17,7 @@ public class MessagesConfig {
         put("Messages.Command_Not_Found", "Sorry, command not found!");
         put("Messages.Talisman_Not_Found", "Sorry, Talisman not found!");
         put("Messages.Talisman_Add_Success", "Talisman added with success.");
+        put("Messages.Talisman_Edit_Success", "Talisman edited with success.");
         put("Messages.Talisman_Invalid_Material", "Material not found!");
         put("Messages.Talisman_Invalid_Effect", "Effect not found!");
         put("Messages.Talisman_Edited_Success", "Talisman edited with success.");

@@ -5,6 +5,7 @@ import me.gca.talismancreator.events.EventsListeners;
 import me.gca.talismancreator.events.GUIListener;
 import me.gca.talismancreator.managers.TalismansManager;
 import me.gca.talismancreator.messages.MessagesConfig;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -57,6 +58,11 @@ public final class TalismanCreator extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new EventsListeners(), this);
         Bukkit.getPluginManager().registerEvents(new GUIListener(), this);
         getCommand("talisman").setExecutor(new TalismanCommands());
+        // BStats
+        if (getConfig().getBoolean("Plugin.metrics-bstats")) {
+            Metrics metrics = new Metrics(this, 13932);
+            getLogger().info(ChatColor.GOLD + "Metrics enabled with success!");
+        }
         getLogger().info(ChatColor.GREEN + "Enabled with success!");
     }
 

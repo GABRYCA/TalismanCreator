@@ -18,10 +18,13 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
+    jcenter()
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
     implementation 'com.github.cryptomorin:XSeries:8.6.0'
+    implementation 'org.bstats:bstats-bukkit:2.2.1'
     compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
 }
 
@@ -53,6 +56,7 @@ processResources {
 shadowJar {
     archiveName = "TalismanCreator-" + version.toString() + ".jar"
     relocate 'com.cryptomorin.xseries', 'me.gca.talismancreator.utils'
+    relocate 'org.bstats', 'me.gca.talismancreator.bstats'
 }
 
 artifacts {

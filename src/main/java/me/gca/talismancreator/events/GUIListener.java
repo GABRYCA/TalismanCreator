@@ -1,8 +1,7 @@
 package me.gca.talismancreator.events;
 
 import me.gca.talismancreator.TalismanCreator;
-import me.gca.talismancreator.gui.TalismanItemsGUI;
-import me.gca.talismancreator.gui.TalismanManageItem;
+import me.gca.talismancreator.gui.*;
 import me.gca.talismancreator.managers.Talisman;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
@@ -12,6 +11,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -106,11 +107,12 @@ public class GUIListener implements Listener {
                             addTalismanEditing(p, talisman);
                         }
                         case "Manage Lore" -> {
-                            // TODO Open Lore Manage GUI.
+                            e.setCancelled(true);
                         }
                         case "Manage effects" -> {
-                            // TODO Open Effects Manage GUI.
-                        }
+                            Talisman talisman = talismanEditing.get(p);
+                            new TalismanManageEffects(p, talismanEditing.get(p));
+                            addTalismanEditing(p, talisman);                        }
                         default -> {
                             e.setCancelled(true);
                         }
@@ -134,7 +136,11 @@ public class GUIListener implements Listener {
                             addTalismanEditing(p, talisman);
                         }
                         case "Choose from Heads" -> {
-                            // TODO Open GUI showing some random Heads with pages.
+                            // Talisman talisman = talismanEditing.get(p);
+                            // new TalismanHeadsGUI(p, talismanEditing.get(p), 0);
+                            // addTalismanEditing(p, talisman);
+                            p.sendMessage(TalismanCreator.colorFormat("&6Coming soon!"));
+                            e.setCancelled(true);
                         }
                         default -> {
                             e.setCancelled(true);
@@ -166,6 +172,97 @@ public class GUIListener implements Listener {
                             addTalismanEditing(p, talisman);
                         } else if (parts[0].equalsIgnoreCase("Next-Page")){
                             new TalismanItemsGUI(p, talismanEditing.get(p), Integer.parseInt(parts[1]));
+                            addTalismanEditing(p, talisman);
+                        }
+                    }
+                    e.setCancelled(true);
+                }
+
+                case "Talisman Heads" -> {
+                    if (talismanEditing.get(p) == null){
+                        p.closeInventory();
+                        e.setCancelled(true);
+                        return;
+                    }
+
+                    String[] parts = buttonTitle.split(" ");
+                    if (parts.length == 1){
+                        Talisman oldTalisman = talismanEditing.get(p);
+                        ItemMeta meta = oldTalisman.getItemStack().getItemMeta();
+                        ItemStack itemClicked = e.getCurrentItem();
+                        itemClicked.setItemMeta(meta);
+                        Talisman newTalisman = new Talisman(itemClicked, oldTalisman.getEffects());
+                        TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
+                        p.closeInventory();
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
+                    } else if (parts.length == 2){
+                        Talisman talisman = talismanEditing.get(p);
+                        if (parts[0].equalsIgnoreCase("Previous-Page")){
+                            new TalismanHeadsGUI(p, talismanEditing.get(p), Integer.parseInt(parts[1]));
+                            addTalismanEditing(p, talisman);
+                        } else if (parts[0].equalsIgnoreCase("Next-Page")){
+                            new TalismanHeadsGUI(p, talismanEditing.get(p), Integer.parseInt(parts[1]));
+                            addTalismanEditing(p, talisman);
+                        }
+                    }
+                    e.setCancelled(true);
+                }
+
+                case "Talisman Manage Effects" -> {
+
+                    if (talismanEditing.get(p) == null){
+                        p.sendMessage("Null talisman");
+                        p.closeInventory();
+                        e.setCancelled(true);
+                        return;
+                    }
+
+                    switch (buttonTitle){
+                        case "Remove effects" ->{
+                            //TODO GUI showing all effects of Talisman with actions like click to remove and close GUI button, maybe also pages.
+                        }
+                        case "Click to manage" -> {
+                            Talisman talisman = talismanEditing.get(p);
+                            new TalismanEffectsGUI(p, talismanEditing.get(p), 0);
+                            addTalismanEditing(p, talisman);
+                        }
+                        default -> {
+                            e.setCancelled(true);
+                        }
+                    }
+
+                }
+
+                case "Talisman Effects" -> {
+                    if (talismanEditing.get(p) == null){
+                        p.closeInventory();
+                        e.setCancelled(true);
+                        return;
+                    }
+
+                    String[] parts = buttonTitle.split(" ");
+                    if (parts.length == 1){
+                        Talisman oldTalisman = talismanEditing.get(p);
+                        List<PotionEffect> potionEffects = oldTalisman.getEffects();
+                        PotionEffectType potionEffectType = PotionEffectType.getByName(buttonTitle);
+                        if (potionEffectType == null){
+                            e.setCancelled(true);
+                            p.closeInventory();
+                            p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &cSomething went wrong, not valid effect!"));
+                            return;
+                        }
+                        potionEffects.add(new PotionEffect(PotionEffectType.getByName(buttonTitle), Integer.MAX_VALUE, 1));
+                        Talisman newTalisman = new Talisman(oldTalisman.getItemStack(), oldTalisman.getEffects());
+                        TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
+                        p.closeInventory();
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
+                    } else if (parts.length == 2){
+                        Talisman talisman = talismanEditing.get(p);
+                        if (parts[0].equalsIgnoreCase("Previous-Page")){
+                            new TalismanEffectsGUI(p, talismanEditing.get(p), Integer.parseInt(parts[1]));
+                            addTalismanEditing(p, talisman);
+                        } else if (parts[0].equalsIgnoreCase("Next-Page")){
+                            new TalismanEffectsGUI(p, talismanEditing.get(p), Integer.parseInt(parts[1]));
                             addTalismanEditing(p, talisman);
                         }
                     }

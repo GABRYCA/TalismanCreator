@@ -3,4 +3,5 @@ Talisman:
 Plugin:
   PluginPrefix: "&4[&6TalismanCreator&4]&f"
   language: en
+  metrics-bstats: true
 Talismans:
