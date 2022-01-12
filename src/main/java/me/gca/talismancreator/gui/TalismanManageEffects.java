@@ -24,7 +24,7 @@ public class TalismanManageEffects extends SpigotGUIComponents {
         GUIListener.getInstance().addTalismanEditing(p, talisman);
 
         // Create Buttons
-        ItemStack talismanItem = createButton(XMaterial.POTION.parseItem(), createLore("&8Click to manage"), "&6Remove effects");
+        ItemStack talismanItem = createButton(XMaterial.BREWING_STAND.parseItem(), createLore("&8Click to manage"), "&6Remove effects");
         ItemStack talismanHead = createButton(XMaterial.BREAD.parseItem(), createLore("&8Click to manage"), "&6Add effect");
 
         // Create Inventory.

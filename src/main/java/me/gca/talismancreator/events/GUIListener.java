@@ -106,13 +106,14 @@ public class GUIListener implements Listener {
                             new TalismanManageItem(p, talismanEditing.get(p));
                             addTalismanEditing(p, talisman);
                         }
+                        case "Manage Effects" -> {
+                            Talisman talisman = talismanEditing.get(p);
+                            new TalismanManageEffects(p, talismanEditing.get(p));
+                            addTalismanEditing(p, talisman);
+                        }
                         case "Manage Lore" -> {
                             e.setCancelled(true);
                         }
-                        case "Manage effects" -> {
-                            Talisman talisman = talismanEditing.get(p);
-                            new TalismanManageEffects(p, talismanEditing.get(p));
-                            addTalismanEditing(p, talisman);                        }
                         default -> {
                             e.setCancelled(true);
                         }
@@ -164,7 +165,7 @@ public class GUIListener implements Listener {
                         Talisman newTalisman = new Talisman(itemClicked, oldTalisman.getEffects());
                         TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
                         p.closeInventory();
-                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Add_Success")));
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
                     } else if (parts.length == 2){
                         Talisman talisman = talismanEditing.get(p);
                         if (parts[0].equalsIgnoreCase("Previous-Page")){
@@ -221,7 +222,7 @@ public class GUIListener implements Listener {
                         case "Remove effects" ->{
                             //TODO GUI showing all effects of Talisman with actions like click to remove and close GUI button, maybe also pages.
                         }
-                        case "Click to manage" -> {
+                        case "Add effect" -> {
                             Talisman talisman = talismanEditing.get(p);
                             new TalismanEffectsGUI(p, talismanEditing.get(p), 0);
                             addTalismanEditing(p, talisman);

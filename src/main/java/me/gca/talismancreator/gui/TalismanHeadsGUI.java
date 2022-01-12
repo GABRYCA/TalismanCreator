@@ -32,7 +32,7 @@ public class TalismanHeadsGUI extends SpigotGUIComponents {
         int counter = 0;
         /*for (head : database.getHeads()){
             if (counter > startingPoint){
-                inv.addItem(createButton(head.getItemStack(), createLore("&8Click to choose"), head.getUniqueId().toString()));
+                inv.addItem(createButton(head.getItemStack(), createLore("&8Click to choose"), "&6" + head.getUniqueId().toString()));
             }
             if (counter == startingPoint + 45){
                 break;

@@ -24,8 +24,8 @@ public class TalismanEditGUI extends SpigotGUIComponents {
 
         // Create Buttons
         ItemStack talismanItem = createButton(talisman.getItemStack(), createLore("&8Click to open.", "", "&6Current item:", "&f- &6" + talisman.getItemStack().getType().toString()), "&6Manage Item");
-        ItemStack talismanTitle = createButton(XMaterial.FEATHER.parseItem(), createLore("&8Click to edit.", "", "&6Current title:", "&f- &6" + talisman.getTitle()), "&6Manage Title");
-        ItemStack talismanEffects = createButton(XMaterial.BREWING_STAND.parseItem(), createLore("&8Click to open."), "&6Manage Lore");
+        ItemStack talismanEffects = createButton(XMaterial.BREWING_STAND.parseItem(), createLore("&8Click to open."), "&6Manage Effects");
+        ItemStack talismanLore = createButton(XMaterial.BOOK.parseItem(), createLore("&8Click to open."), "&6Manage Lore");
 
         // Create Inventory.
         Inventory inv = Bukkit.createInventory(null, size, TalismanCreator.colorFormat("&6Talisman Edit"));
@@ -33,8 +33,8 @@ public class TalismanEditGUI extends SpigotGUIComponents {
         // Add Buttons to Inventory.
         inv.setItem(size - 1, getCloseGUIButton());
         inv.setItem(10, talismanItem);
-        inv.setItem(13, talismanTitle);
-        inv.setItem(16, talismanEffects);
+        inv.setItem(13, talismanEffects);
+        inv.setItem(16, talismanLore);
 
         // Open Inventory.
         openGUI(inv, p);
