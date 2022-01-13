@@ -220,8 +220,9 @@ public class GUIListener implements Listener {
 
                     switch (buttonTitle){
                         case "Remove effects" ->{
-                            //TODO GUI showing all effects of Talisman with actions like click to remove and close GUI button, maybe also pages.
-                        }
+                            Talisman talisman = talismanEditing.get(p);
+                            new TalismanRemoveEffectsGUI(p, talismanEditing.get(p));
+                            addTalismanEditing(p, talisman);                        }
                         case "Add effect" -> {
                             Talisman talisman = talismanEditing.get(p);
                             new TalismanEffectsGUI(p, talismanEditing.get(p), 0);
@@ -268,6 +269,30 @@ public class GUIListener implements Listener {
                         }
                     }
                     e.setCancelled(true);
+                }
+
+                case "Talisman Remove Effect" -> {
+                    if (talismanEditing.get(p) == null){
+                        p.closeInventory();
+                        e.setCancelled(true);
+                        return;
+                    }
+
+                    Talisman oldTalisman = talismanEditing.get(p);
+                    List<PotionEffect> potionEffects = oldTalisman.getEffects();
+                    PotionEffectType potionEffectType = PotionEffectType.getByName(buttonTitle);
+                    if (potionEffectType == null){
+                        e.setCancelled(true);
+                        p.closeInventory();
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &cSomething went wrong, not valid effect!"));
+                        return;
+                    }
+                    potionEffects.remove(new PotionEffect(PotionEffectType.getByName(buttonTitle), Integer.MAX_VALUE, 1));
+                    Talisman newTalisman = new Talisman(oldTalisman.getItemStack(), oldTalisman.getEffects());
+                    TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
+                    p.closeInventory();
+                    p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
+
                 }
 
                 default -> {

@@ -38,5 +38,4 @@ public class TalismanManageEffects extends SpigotGUIComponents {
         // Open Inventory.
         openGUI(inv, p);
     }
-
 }

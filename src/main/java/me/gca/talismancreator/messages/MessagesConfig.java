@@ -20,6 +20,7 @@ public class MessagesConfig {
         put("Messages.Talisman_Edit_Success", "Talisman edited with success.");
         put("Messages.Talisman_Invalid_Material", "Material not found!");
         put("Messages.Talisman_Invalid_Effect", "Effect not found!");
+        put("Messages.Talisman_Effects_None", "There aren't effects to show.");
         put("Messages.Talisman_Edited_Success", "Talisman edited with success.");
         put("Messages.Talisman_Remove_Success", "Talisman removed with success.");
         put("Messages.Talisman_Effect_Applied_Success", "Talisman effect applied with success.");
