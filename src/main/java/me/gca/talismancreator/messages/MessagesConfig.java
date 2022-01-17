@@ -32,6 +32,8 @@ public class MessagesConfig {
         put("Messages.Missing_Player_Name", "Please specify Player name.");
         put("Messages.Player_Not_Found", "Player not found, it may be offline!");
         put("Messages.GUI_Close_Success", "GUI Closed with success!");
+        put("Messages.Out_Of_Time", "You ran out of time, nothing got changed!");
+        put("Messages.Cancel_Chat_Success", "Event cancelled with success!");
     }};
 
     public MessagesConfig(){

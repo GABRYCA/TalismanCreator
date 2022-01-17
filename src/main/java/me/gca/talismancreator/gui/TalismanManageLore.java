@@ -32,7 +32,7 @@ public class TalismanManageLore extends SpigotGUIComponents {
 
         // Add lore buttons.
         for (String lore : talisman.getLore()){
-            inv.addItem(createButton(XMaterial.PAPER.parseItem(), createLore("&8 - Left click to edit", "&8 - Right click to delete"), lore));
+            inv.addItem(createButton(XMaterial.PAPER.parseItem(), createLore("&8 - Left click to edit", "&8 - Right click to delete"), "&5" + lore));
         }
 
         // Add Buttons to Inventory.

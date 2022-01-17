@@ -1,14 +1,17 @@
 package me.gca.talismancreator.events;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
 import me.gca.talismancreator.gui.*;
 import me.gca.talismancreator.managers.Talisman;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -22,9 +25,13 @@ public class GUIListener implements Listener {
 
     private static GUIListener instance;
     private static List<Player> playersUsingGUI = new ArrayList<>();
+    private static List<Player> playersUsingChat = new ArrayList<>();
     private static HashMap<Player, Talisman> talismanEditing = new HashMap<>();
     private static final Configuration messages = TalismanCreator.getMessagesConfig();
     private static final String pluginPrefix = TalismanCreator.getPluginPrefix();
+    private int id;
+    private String mode;
+    private int beingEditedLore;
 
     public GUIListener(){}
 
@@ -53,6 +60,55 @@ public class GUIListener implements Listener {
 
     public void removeFromActivePlayersGUI(Player p){
         playersUsingGUI.remove(p);
+    }
+
+    public void addPlayerActiveChat(Player p){
+        if (!playersUsingChat.contains(p)){
+            playersUsingChat.add(p);
+        }
+    }
+
+    public void removePlayerActiveChat(Player p){
+        playersUsingChat.remove(p);
+    }
+
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent e){
+
+        if (!playersUsingChat.contains(e.getPlayer())){
+            return;
+        }
+
+        Player p = e.getPlayer();
+        Bukkit.getScheduler().cancelTask(id);
+        String message = e.getMessage();
+        if (message.equalsIgnoreCase("Close")){
+            removePlayerActiveChat(p);
+            removeTalismanEditing(p);
+            p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Cancel_Chat_Success")));
+            e.setCancelled(true);
+            return;
+        }
+        if (mode.equalsIgnoreCase("edit")){
+            Talisman oldTalisman = talismanEditing.get(p);
+            Talisman newTalisman = oldTalisman;
+            List<String> lore = oldTalisman.getLore();
+            lore.set(beingEditedLore, TalismanCreator.colorFormat(message));
+            newTalisman.setLore(lore);
+            TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
+        } else if (mode.equalsIgnoreCase("add")) {
+            Talisman oldTalisman = talismanEditing.get(p);
+            Talisman newTalisman = oldTalisman;
+            List<String> lore = oldTalisman.getLore();
+            lore.add(TalismanCreator.colorFormat(message));
+            newTalisman.setLore(lore);
+            TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
+        }
+        mode = null;
+        removePlayerActiveChat(p);
+        removeTalismanEditing(p);
+        e.setCancelled(true);
+        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
     }
 
     @EventHandler
@@ -103,15 +159,18 @@ public class GUIListener implements Listener {
                     switch (buttonTitle){
                         case "Manage Item" -> {
                             Talisman talisman = talismanEditing.get(p);
-                            new TalismanManageItem(p, talismanEditing.get(p));
+                            new TalismanManageItem(p, talisman);
                             addTalismanEditing(p, talisman);
                         }
                         case "Manage Effects" -> {
                             Talisman talisman = talismanEditing.get(p);
-                            new TalismanManageEffects(p, talismanEditing.get(p));
+                            new TalismanManageEffects(p, talisman);
                             addTalismanEditing(p, talisman);
                         }
                         case "Manage Lore" -> {
+                            Talisman talisman = talismanEditing.get(p);
+                            new TalismanManageLore(p, talisman);
+                            addTalismanEditing(p, talisman);
                             e.setCancelled(true);
                         }
                         default -> {
@@ -133,7 +192,7 @@ public class GUIListener implements Listener {
                     switch (buttonTitle){
                         case "Choose from Items" ->{
                             Talisman talisman = talismanEditing.get(p);
-                            new TalismanItemsGUI(p, talismanEditing.get(p), 0);
+                            new TalismanItemsGUI(p, talisman, 0);
                             addTalismanEditing(p, talisman);
                         }
                         case "Choose from Heads" -> {
@@ -162,7 +221,8 @@ public class GUIListener implements Listener {
                         ItemMeta meta = oldTalisman.getItemStack().getItemMeta();
                         ItemStack itemClicked = e.getCurrentItem();
                         itemClicked.setItemMeta(meta);
-                        Talisman newTalisman = new Talisman(itemClicked, oldTalisman.getEffects());
+                        Talisman newTalisman = oldTalisman;
+                        newTalisman.setxMaterial(XMaterial.matchXMaterial(itemClicked));
                         TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
                         p.closeInventory();
                         p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
@@ -192,7 +252,8 @@ public class GUIListener implements Listener {
                         ItemMeta meta = oldTalisman.getItemStack().getItemMeta();
                         ItemStack itemClicked = e.getCurrentItem();
                         itemClicked.setItemMeta(meta);
-                        Talisman newTalisman = new Talisman(itemClicked, oldTalisman.getEffects());
+                        Talisman newTalisman = oldTalisman;
+                        newTalisman.setxMaterial(XMaterial.matchXMaterial(itemClicked));
                         TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
                         p.closeInventory();
                         p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
@@ -221,11 +282,11 @@ public class GUIListener implements Listener {
                     switch (buttonTitle){
                         case "Remove effects" ->{
                             Talisman talisman = talismanEditing.get(p);
-                            new TalismanRemoveEffectsGUI(p, talismanEditing.get(p));
+                            new TalismanRemoveEffectsGUI(p, talisman);
                             addTalismanEditing(p, talisman);                        }
                         case "Add effect" -> {
                             Talisman talisman = talismanEditing.get(p);
-                            new TalismanEffectsGUI(p, talismanEditing.get(p), 0);
+                            new TalismanEffectsGUI(p, talisman, 0);
                             addTalismanEditing(p, talisman);
                         }
                         default -> {
@@ -254,17 +315,18 @@ public class GUIListener implements Listener {
                             return;
                         }
                         potionEffects.add(new PotionEffect(PotionEffectType.getByName(buttonTitle), Integer.MAX_VALUE, 1));
-                        Talisman newTalisman = new Talisman(oldTalisman.getItemStack(), oldTalisman.getEffects());
+                        Talisman newTalisman = oldTalisman;
+                        newTalisman.setEffects(potionEffects);
                         TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
                         p.closeInventory();
                         p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
                     } else if (parts.length == 2){
                         Talisman talisman = talismanEditing.get(p);
                         if (parts[0].equalsIgnoreCase("Previous-Page")){
-                            new TalismanEffectsGUI(p, talismanEditing.get(p), Integer.parseInt(parts[1]));
+                            new TalismanEffectsGUI(p, talisman, Integer.parseInt(parts[1]));
                             addTalismanEditing(p, talisman);
                         } else if (parts[0].equalsIgnoreCase("Next-Page")){
-                            new TalismanEffectsGUI(p, talismanEditing.get(p), Integer.parseInt(parts[1]));
+                            new TalismanEffectsGUI(p, talisman, Integer.parseInt(parts[1]));
                             addTalismanEditing(p, talisman);
                         }
                     }
@@ -288,7 +350,8 @@ public class GUIListener implements Listener {
                         return;
                     }
                     potionEffects.remove(new PotionEffect(PotionEffectType.getByName(buttonTitle), Integer.MAX_VALUE, 1));
-                    Talisman newTalisman = new Talisman(oldTalisman.getItemStack(), oldTalisman.getEffects());
+                    Talisman newTalisman = oldTalisman;
+                    newTalisman.setEffects(potionEffects);
                     TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
                     p.closeInventory();
                     p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
@@ -306,18 +369,54 @@ public class GUIListener implements Listener {
                     if (buttonTitle.equals("Legend:")){
                         return;
                     } else if (buttonTitle.equals("Add Line")){
-                        //TODO Add line chat event.
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6Write &cClose &6to cancel,"));
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6Otherwise write your text and press enter."));
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6If you do nothing, this event will close in 30 seconds!"));
+                        addPlayerActiveChat(p);
+                        mode = "add";
+                        id = Bukkit.getScheduler().scheduleSyncDelayedTask(TalismanCreator.getInstance(), () -> {
+                            if (playersUsingChat.contains(p)){
+                                return;
+                            }
+                            removePlayerActiveChat(p);
+                            removeTalismanEditing(p);
+                            p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Out_Of_Time")));
+                            mode = null;
+                        }, 20L * 30);
+                        Talisman talisman = talismanEditing.get(p);
+                        p.closeInventory();
+                        addTalismanEditing(p, talisman);
                         return;
                     }
-
-                    Talisman oldTalisman = talismanEditing.get(p);
-                    List<String> lores = oldTalisman.getLore();
-                    lores.remove(buttonTitle);
-                    Talisman newTalisman = oldTalisman;
-                    newTalisman.setLore(lores);
-                    TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
-                    p.closeInventory();
-                    p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
+                    if (e.getClick().isRightClick()) {
+                        Talisman oldTalisman = talismanEditing.get(p);
+                        Talisman newTalisman = oldTalisman;
+                        List<String> lores = oldTalisman.getLore();
+                        lores.remove(buttonTitle);
+                        newTalisman.setLore(lores);
+                        TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
+                        p.closeInventory();
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
+                    } else if (e.getClick().isLeftClick()){
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6Write &cClose &6to cancel,"));
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6Otherwise write your text and press enter."));
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6If you do nothing, this event will close in 30 seconds!"));
+                        beingEditedLore = e.getSlot();
+                        mode = "edit";
+                        addPlayerActiveChat(p);
+                        id = Bukkit.getScheduler().scheduleSyncDelayedTask(TalismanCreator.getInstance(), () -> {
+                            if (playersUsingChat.contains(p)){
+                                return;
+                            }
+                            removePlayerActiveChat(p);
+                            removeTalismanEditing(p);
+                            p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Out_Of_Time")));
+                            mode = null;
+                        }, 20L * 30);
+                        Talisman talisman = talismanEditing.get(p);
+                        p.closeInventory();
+                        addTalismanEditing(p, talisman);
+                    }
                     e.setCancelled(true);
                 }
 
