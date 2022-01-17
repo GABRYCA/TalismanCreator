@@ -292,7 +292,33 @@ public class GUIListener implements Listener {
                     TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
                     p.closeInventory();
                     p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
+                    e.setCancelled(true);
+                }
 
+                case "Talisman Manage Lores" -> {
+
+                    if (talismanEditing.get(p) == null){
+                        p.closeInventory();
+                        e.setCancelled(true);
+                        return;
+                    }
+
+                    if (buttonTitle.equals("Legend:")){
+                        return;
+                    } else if (buttonTitle.equals("Add Line")){
+                        //TODO Add line chat event.
+                        return;
+                    }
+
+                    Talisman oldTalisman = talismanEditing.get(p);
+                    List<String> lores = oldTalisman.getLore();
+                    lores.remove(buttonTitle);
+                    Talisman newTalisman = oldTalisman;
+                    newTalisman.setLore(lores);
+                    TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
+                    p.closeInventory();
+                    p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
+                    e.setCancelled(true);
                 }
 
                 default -> {
