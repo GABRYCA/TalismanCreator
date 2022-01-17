@@ -367,11 +367,12 @@ public class GUIListener implements Listener {
                     }
 
                     if (buttonTitle.equals("Legend:")){
+                        e.setCancelled(true);
                         return;
                     } else if (buttonTitle.equals("Add Line")){
                         p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6Write &cClose &6to cancel,"));
                         p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6Otherwise write your text and press enter."));
-                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6If you do nothing, this event will close in 30 seconds!"));
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6This event will close in 30 seconds!"));
                         addPlayerActiveChat(p);
                         mode = "add";
                         id = Bukkit.getScheduler().scheduleSyncDelayedTask(TalismanCreator.getInstance(), () -> {
@@ -400,7 +401,7 @@ public class GUIListener implements Listener {
                     } else if (e.getClick().isLeftClick()){
                         p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6Write &cClose &6to cancel,"));
                         p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6Otherwise write your text and press enter."));
-                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6If you do nothing, this event will close in 30 seconds!"));
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6This event will close in 30 seconds!"));
                         beingEditedLore = e.getSlot();
                         mode = "edit";
                         addPlayerActiveChat(p);
