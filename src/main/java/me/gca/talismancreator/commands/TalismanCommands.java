@@ -3,6 +3,7 @@ package me.gca.talismancreator.commands;
 import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
 import me.gca.talismancreator.gui.TalismanEditGUI;
+import me.gca.talismancreator.gui.TalismanTalismansGUI;
 import me.gca.talismancreator.managers.Talisman;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -39,8 +40,7 @@ public class TalismanCommands implements CommandExecutor {
                     sender.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &c" + messages.getString("Messages.Player_Only")));
                     return true;
                 }
-                //TODO
-                // Main GUI and admin stuff.
+                new TalismanTalismansGUI((Player) sender, 0);
             }
             case "add" -> {
                 if (args.length <= 3){
