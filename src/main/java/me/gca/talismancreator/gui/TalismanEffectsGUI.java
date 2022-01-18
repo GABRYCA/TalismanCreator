@@ -31,7 +31,7 @@ public class TalismanEffectsGUI extends SpigotGUIComponents {
 
         int counter = 0;
         for (PotionEffectType potionEffectType : PotionEffectType.values()){
-            if (counter > startingPoint){
+            if (counter >= startingPoint){
                 inv.addItem(createButton(XMaterial.POTION.parseItem(), createLore("&8Click to choose"), "&6" + potionEffectType.getName()));
             }
             if (counter == startingPoint + 45){

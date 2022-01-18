@@ -41,6 +41,7 @@ public class TalismanCommands implements CommandExecutor {
                     return true;
                 }
                 new TalismanTalismansGUI((Player) sender, 0);
+                return true;
             }
             case "add" -> {
                 if (args.length <= 3){
@@ -184,7 +185,6 @@ public class TalismanCommands implements CommandExecutor {
                 return true;
             }
         }
-        return false;
     }
 
     public void commandList(CommandSender sender){

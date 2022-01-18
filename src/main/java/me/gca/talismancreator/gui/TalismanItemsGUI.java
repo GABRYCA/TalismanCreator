@@ -30,7 +30,7 @@ public class TalismanItemsGUI extends SpigotGUIComponents {
 
         int counter = 0;
         for (XMaterial xMaterial : XMaterial.values()){
-            if (counter > startingPoint){
+            if (counter >= startingPoint){
                 inv.addItem(createButton(xMaterial.parseItem(), createLore("&8Click to choose"), "&6" + xMaterial.name()));
             }
             if (counter == startingPoint + 45){

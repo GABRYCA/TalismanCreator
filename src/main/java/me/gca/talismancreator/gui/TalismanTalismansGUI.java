@@ -14,7 +14,12 @@ import java.util.List;
 public class TalismanTalismansGUI extends SpigotGUIComponents {
 
     public TalismanTalismansGUI(Player p, int startingPoint){
-        if (p == null || TalismanCreator.getTalismansManager().getTalismans().isEmpty()){
+        if (p == null){
+            return;
+        }
+
+        if (TalismanCreator.getTalismansManager().getTalismans().isEmpty()){
+            p.sendMessage(TalismanCreator.colorFormat(TalismanCreator.getPluginPrefix()  + "There aren't talismans to show, please use /talisman add to add one."));
             return;
         }
 
@@ -31,7 +36,7 @@ public class TalismanTalismansGUI extends SpigotGUIComponents {
 
         int counter = 0;
         for (Talisman talisman : talismans){
-            if (counter > startingPoint){
+            if (counter >= startingPoint){
                 inv.addItem(createButton(talisman.getItemStack(), createLore("&8Click to choose"), "T:" + talisman.getTitle()));
             }
             if (counter == startingPoint + 45){

@@ -423,21 +423,17 @@ public class GUIListener implements Listener {
 
                 case "Talismans GUI" -> {
 
-                    if (talismanEditing.get(p) == null){
-                        p.closeInventory();
-                        e.setCancelled(true);
-                        return;
-                    }
-
                     String[] parts = buttonTitle.split(" ");
                     if (parts.length == 2){
                         Talisman talisman = talismanEditing.get(p);
                         if (parts[0].equalsIgnoreCase("Previous-Page")){
                             new TalismanTalismansGUI(p, Integer.parseInt(parts[1]));
                             addTalismanEditing(p, talisman);
+                            return;
                         } else if (parts[0].equalsIgnoreCase("Next-Page")){
                             new TalismanTalismansGUI(p, Integer.parseInt(parts[1]));
                             addTalismanEditing(p, talisman);
+                            return;
                         }
                     }
                     Talisman talisman = TalismanCreator.getTalismansManager().getTalisman(buttonTitle);
@@ -445,9 +441,8 @@ public class GUIListener implements Listener {
                         p.sendMessage(pluginPrefix + " &cNot found error.");
                         return;
                     }
-                    p.closeInventory();
-                    addTalismanEditing(p, talisman);
                     new TalismanEditGUI(p, talisman);
+                    addTalismanEditing(p, talisman);
                 }
 
                 default -> {
