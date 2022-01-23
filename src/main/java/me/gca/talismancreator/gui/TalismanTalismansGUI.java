@@ -19,7 +19,7 @@ public class TalismanTalismansGUI extends SpigotGUIComponents {
         }
 
         if (TalismanCreator.getTalismansManager().getTalismans().isEmpty()){
-            p.sendMessage(TalismanCreator.colorFormat(TalismanCreator.getPluginPrefix()  + "There aren't talismans to show, please use /talisman add to add one."));
+            p.sendMessage(TalismanCreator.colorFormat(TalismanCreator.getPluginPrefix()  + " &6There aren't talismans to show, please use /talisman add to add one."));
             return;
         }
 

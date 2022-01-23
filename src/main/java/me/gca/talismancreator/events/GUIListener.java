@@ -1,5 +1,6 @@
 package me.gca.talismancreator.events;
 
+import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
 import me.gca.talismancreator.gui.*;
@@ -14,12 +15,14 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class GUIListener implements Listener {
 
@@ -196,11 +199,9 @@ public class GUIListener implements Listener {
                             addTalismanEditing(p, talisman);
                         }
                         case "Choose from Heads" -> {
-                            // Talisman talisman = talismanEditing.get(p);
-                            // new TalismanHeadsGUI(p, talismanEditing.get(p), 0);
-                            // addTalismanEditing(p, talisman);
-                            p.sendMessage(TalismanCreator.colorFormat("&6Coming soon!"));
-                            e.setCancelled(true);
+                            Talisman talisman = talismanEditing.get(p);
+                            new TalismanHeadsGUI(p, talisman, 0);
+                            addTalismanEditing(p, talisman);
                         }
                         default -> {
                             e.setCancelled(true);
@@ -223,6 +224,7 @@ public class GUIListener implements Listener {
                         itemClicked.setItemMeta(meta);
                         Talisman newTalisman = oldTalisman;
                         newTalisman.setxMaterial(XMaterial.matchXMaterial(itemClicked));
+                        newTalisman.setSkull(false);
                         TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
                         p.closeInventory();
                         p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
@@ -249,12 +251,7 @@ public class GUIListener implements Listener {
                     String[] parts = buttonTitle.split(" ");
                     if (parts.length == 1){
                         Talisman oldTalisman = talismanEditing.get(p);
-                        ItemMeta meta = oldTalisman.getItemStack().getItemMeta();
-                        ItemStack itemClicked = e.getCurrentItem();
-                        itemClicked.setItemMeta(meta);
-                        Talisman newTalisman = oldTalisman;
-                        newTalisman.setxMaterial(XMaterial.matchXMaterial(itemClicked));
-                        TalismanCreator.getTalismansManager().editTalisman(oldTalisman, newTalisman);
+                        TalismanCreator.getTalismansManager().editTalisman(oldTalisman, new Talisman(oldTalisman.getTitle(), buttonTitle, oldTalisman.getLore(), oldTalisman.getEffects()));
                         p.closeInventory();
                         p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
                     } else if (parts.length == 2){
@@ -425,14 +422,11 @@ public class GUIListener implements Listener {
 
                     String[] parts = buttonTitle.split(" ");
                     if (parts.length == 2){
-                        Talisman talisman = talismanEditing.get(p);
                         if (parts[0].equalsIgnoreCase("Previous-Page")){
                             new TalismanTalismansGUI(p, Integer.parseInt(parts[1]));
-                            addTalismanEditing(p, talisman);
                             return;
                         } else if (parts[0].equalsIgnoreCase("Next-Page")){
                             new TalismanTalismansGUI(p, Integer.parseInt(parts[1]));
-                            addTalismanEditing(p, talisman);
                             return;
                         }
                     }

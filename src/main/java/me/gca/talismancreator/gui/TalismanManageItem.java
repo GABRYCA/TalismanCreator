@@ -25,7 +25,7 @@ public class TalismanManageItem extends SpigotGUIComponents {
 
         // Create Buttons
         ItemStack talismanItem = createButton(XMaterial.TOTEM_OF_UNDYING.parseItem(), createLore("&8Click to choose."), "&6Choose from Items");
-        ItemStack talismanHead = createButton(SkullUtils.getSkull(p.getUniqueId()), createLore("&6&lComing Soon!"/*,"&8Click to choose."*/), "&6Choose from Heads");
+        ItemStack talismanHead = createButton(SkullUtils.getSkull(p.getUniqueId()), createLore("&8Click to choose."), "&6Choose from Heads");
 
         // Create Inventory.
         Inventory inv = Bukkit.createInventory(null, size, TalismanCreator.colorFormat("&6Talisman Manage Item"));

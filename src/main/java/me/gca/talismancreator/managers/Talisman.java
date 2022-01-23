@@ -1,14 +1,19 @@
 package me.gca.talismancreator.managers;
 
+import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
+import me.gca.talismancreator.managers.heads.Head;
+import me.gca.talismancreator.managers.heads.HeadAPI;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class Talisman {
 
@@ -16,6 +21,8 @@ public class Talisman {
     private String title;
     private List<String> lore;
     private List<PotionEffect> effects;
+    private String skullUUID;
+    private boolean isSkull = false;
 
     public Talisman(XMaterial xMaterial, String title, List<PotionEffect> effects){
         this.xMaterial = xMaterial;
@@ -43,6 +50,14 @@ public class Talisman {
             this.lore = Collections.singletonList(TalismanCreator.getInstance().getConfig().getString(TalismanCreator.colorFormat("Talisman.DefaultLore")));
             this.title = TalismanCreator.colorFormat("Talisman - " + itemStack.getType().name());
         }
+        this.effects = effects;
+    }
+
+    public Talisman(String title, String skullUUID, List<String> lore, List<PotionEffect> effects){
+        this.title = TalismanCreator.colorFormat(title);
+        this.isSkull = true;
+        this.skullUUID = skullUUID;
+        this.lore = TalismanCreator.colorFormat(lore);
         this.effects = effects;
     }
 
@@ -94,17 +109,47 @@ public class Talisman {
     }
 
     public ItemStack getItemStack(){
-        ItemStack itemStack = xMaterial.parseItem();
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(title);
-        if (!lore.isEmpty()) {
-            itemMeta.setLore(lore);
+        ItemStack itemStack;
+        if (isSkull){
+            Head head = HeadAPI.getHeadByUniqueId(UUID.fromString(skullUUID));
+            itemStack = head.getItemStack();
+            SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+            if (meta != null) {
+                meta.setDisplayName(title);
+            }
+            if (meta != null) {
+                meta.setLore(lore);
+            }
+            itemStack.setItemMeta(meta);
         } else {
-            List<String> tempLore = new ArrayList<>();
-            tempLore.add(TalismanCreator.colorFormat(TalismanCreator.getInstance().getConfig().getString("Talisman.DefaultLore")));
-            itemMeta.setLore(tempLore);
+            itemStack = xMaterial.parseItem();
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            itemMeta.setDisplayName(title);
+            if (!lore.isEmpty()) {
+                itemMeta.setLore(lore);
+            } else {
+                List<String> tempLore = new ArrayList<>();
+                tempLore.add(TalismanCreator.colorFormat(TalismanCreator.getInstance().getConfig().getString("Talisman.DefaultLore")));
+                itemMeta.setLore(tempLore);
+            }
+            itemStack.setItemMeta(itemMeta);
         }
-        itemStack.setItemMeta(itemMeta);
         return itemStack;
+    }
+
+    public boolean isSkull() {
+        return isSkull;
+    }
+
+    public String getSkullUUID() {
+        return skullUUID;
+    }
+
+    public void setSkullUUID(String skullUUID) {
+        this.skullUUID = skullUUID;
+    }
+
+    public void setSkull(boolean skull) {
+        isSkull = skull;
     }
 }
