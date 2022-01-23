@@ -5,6 +5,8 @@ import me.gca.talismancreator.TalismanCreator;
 import me.gca.talismancreator.events.GUIListener;
 import me.gca.talismancreator.gui.util.SpigotGUIComponents;
 import me.gca.talismancreator.managers.Talisman;
+import me.gca.talismancreator.managers.heads.Head;
+import me.gca.talismancreator.managers.heads.HeadAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -30,7 +32,7 @@ public class TalismanHeadsGUI extends SpigotGUIComponents {
 
 
         int counter = 0;
-        /*for (head : database.getHeads()){
+        for (Head head : HeadAPI.getDatabase().getHeads()){
             if (counter > startingPoint){
                 inv.addItem(createButton(head.getItemStack(), createLore("&8Click to choose"), "&6" + head.getUniqueId().toString()));
             }
@@ -38,7 +40,7 @@ public class TalismanHeadsGUI extends SpigotGUIComponents {
                 break;
             }
             counter++;
-        }*/
+        }
 
         // Add Buttons to Inventory.
         inv.setItem(size - 1, getCloseGUIButton());

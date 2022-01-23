@@ -16,6 +16,7 @@ public class TalismansManager {
     private List<Talisman> talismans = new ArrayList<>();
     private FileConfiguration conf = TalismanCreator.getInstance().getConfig();
     private final FileConfiguration messages = TalismanCreator.getMessagesConfig();
+    private boolean editedTalismans = false;
 
     public TalismansManager(){
         int counter = 0;
@@ -125,17 +126,8 @@ public class TalismansManager {
             }
         }
         talismans.add(talisman);
-        int free = 0;
-        while (conf.getConfigurationSection("Talismans." + free) != null){
-            free++;
-        }
-        TalismanCreator.getInstance().getConfig().set("Talismans." + free + ".ItemStack", talisman.getItemStack());
-        for (PotionEffect effect : talisman.getEffects()){
-            TalismanCreator.getInstance().getConfig().set("Talismans." + free + ".Effects." + effect.getType().getName(), effect.getAmplifier());
-        }
-        TalismanCreator.getInstance().saveConfig();
+        editedTalismans = true;
         TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Add_Success")));
-        this.conf = TalismanCreator.getInstance().getConfig();
     }
 
     /**
@@ -144,18 +136,8 @@ public class TalismansManager {
     public void removeTalisman(Talisman talisman){
         if (talismans.contains(talisman)){
             talismans.remove(talisman);
-            // Search in the config for the Talisman identified by his ItemStack.
-            for (String key : conf.getConfigurationSection("Talismans").getKeys(false)){
-                ItemStack itemStack = conf.getItemStack("Talismans." + key + ".ItemStack");
-                if (itemStack != null && itemStack.isSimilar(talisman.getItemStack())) {
-                    // Found it.
-                    TalismanCreator.getInstance().getConfig().set("Talismans." + key, null);
-                    TalismanCreator.getInstance().saveConfig();
-                    TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Remove_Success")));
-                    this.conf = TalismanCreator.getInstance().getConfig();
-                    return;
-                }
-            }
+            editedTalismans = true;
+            TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Remove_Success")));
             return;
         }
         // Not found.
@@ -229,6 +211,27 @@ public class TalismansManager {
         }
         // Not found.
         return null;
+    }
+
+    /**
+     * Save Talismans List.
+     * */
+    public void saveTalismans(){
+        if (!editedTalismans){
+            return;
+        }
+        TalismanCreator.getInstance().getConfig().set("Talismans", null);
+        int free = 0;
+        for (Talisman talisman : talismans){
+            TalismanCreator.getInstance().getConfig().set("Talismans." + free + ".ItemStack", talisman.getItemStack());
+            for (PotionEffect effect : talisman.getEffects()){
+                TalismanCreator.getInstance().getConfig().set("Talismans." + free + ".Effects." + effect.getType().getName(), effect.getAmplifier());
+            }
+            TalismanCreator.getInstance().saveConfig();
+        }
+        editedTalismans = false;
+        this.conf = TalismanCreator.getInstance().getConfig();
+        TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(TalismanCreator.getPluginPrefix() + " &6Saved edited Talismans to config with success!"));
     }
 
     /**

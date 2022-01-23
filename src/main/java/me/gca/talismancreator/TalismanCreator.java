@@ -77,6 +77,7 @@ public final class TalismanCreator extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        System.out.println(ChatColor.RED  + "[TalismanCreator] Disabled with success!");
+        talismansManager.saveTalismans();
+        getLogger().info(ChatColor.GOLD + "Disabled with success!");
     }
 }
