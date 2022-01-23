@@ -228,6 +228,7 @@ public class TalismansManager {
                 TalismanCreator.getInstance().getConfig().set("Talismans." + free + ".Effects." + effect.getType().getName(), effect.getAmplifier());
             }
             TalismanCreator.getInstance().saveConfig();
+            free++;
         }
         editedTalismans = false;
         this.conf = TalismanCreator.getInstance().getConfig();
