@@ -12,6 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Credits to HeadDB by TheSilentPro.
+ *
+ * @author TheSilentPro
+ *
+ * https://github.com/TheSilentPro/HeadDB
+ * */
 public class LocalHead extends Head {
 
     private UUID uuid;

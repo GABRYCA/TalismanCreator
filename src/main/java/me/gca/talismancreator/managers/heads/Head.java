@@ -14,6 +14,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Credits to HeadDB by TheSilentPro.
+ *
+ * @author TheSilentPro
+ *
+ * https://github.com/TheSilentPro/HeadDB
+ * */
 public class Head {
 
     private String name;

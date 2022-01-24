@@ -26,6 +26,10 @@ import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 
 /**
+ * Credits to HeadDB by TheSilentPro.
+ *
+ * https://github.com/TheSilentPro/HeadDB
+ *
  * This is the Database that holds all heads
  *
  * @author TheSilentPro

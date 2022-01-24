@@ -8,6 +8,13 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Credits to HeadDB by TheSilentPro.
+ *
+ * @author TheSilentPro
+ *
+ * https://github.com/TheSilentPro/HeadDB
+ * */
 public enum Category {
 
     ALPHABET("alphabet", ChatColor.YELLOW, 20),

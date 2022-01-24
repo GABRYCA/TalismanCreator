@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
+ * Credits to HeadDB by TheSilentPro.
+ *
+ * https://github.com/TheSilentPro/HeadDB
+ *
  * This class provides simple methods
  * for interacting with the HeadDB plugin
  *
