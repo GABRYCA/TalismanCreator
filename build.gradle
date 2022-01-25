@@ -29,7 +29,7 @@ repositories {
 dependencies {
     implementation 'com.github.cryptomorin:XSeries:8.6.0.0.1'
     implementation 'org.bstats:bstats-bukkit:2.2.1'
-    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    compileOnly 'com.googlecode.json-simple:json-simple:1.1.1'
     compileOnly 'com.mojang:authlib:1.5.25'
     compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
 }
