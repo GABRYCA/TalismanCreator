@@ -38,8 +38,21 @@ public class MessagesConfig {
 
     public MessagesConfig(){
 
+        // Make lang DIR (mkdirs).
+        File path = new File(TalismanCreator.getInstance().getDataFolder() + "/lang");
+        if (!path.exists()){
+            path.mkdirs();
+        }
+
+        File oldPath = new File(TalismanCreator.getInstance().getDataFolder() + "/messages_" + locale + ".yml");
+        if (oldPath.exists()){
+            if (oldPath.renameTo(new File(TalismanCreator.getInstance().getDataFolder() + "/lang/messages_" + locale + ".yml"))){
+                TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat("Moved with success old messages files from old to new location (lang folder)!"));
+            }
+        }
+
         // Filepath
-        File file = new File(TalismanCreator.getInstance().getDataFolder() + "/messages_" + locale + ".yml");
+        File file = new File(TalismanCreator.getInstance().getDataFolder() + "/lang/", "messages_" + locale + ".yml");
 
         // Load config.
         messages = YamlConfiguration.loadConfiguration(file);

@@ -149,6 +149,7 @@ public class HeadDatabase {
 
     public void getHeadsNoCacheAsync(Consumer<Map<Category, List<Head>>> resultSet) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, task -> {
+            TalismanCreator.getInstance().getLogger().info("Thanks to HeadDB for making open source heads available!");
             TalismanCreator.getInstance().getLogger().info("Updating database... ");
             Map<Category, List<Head>> result = new HashMap<>();
             Category[] categories = Category.cache;
