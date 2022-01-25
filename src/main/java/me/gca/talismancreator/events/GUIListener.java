@@ -186,9 +186,8 @@ public class GUIListener implements Listener {
                 case "Talisman Manage Item" -> {
 
                     if (talismanEditing.get(p) == null){
-                        p.sendMessage("Null talisman");
                         p.closeInventory();
-                        e.setCancelled(true);
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &cCached Talisman not found!"));
                         return;
                     }
 
@@ -270,9 +269,8 @@ public class GUIListener implements Listener {
                 case "Talisman Manage Effects" -> {
 
                     if (talismanEditing.get(p) == null){
-                        p.sendMessage("Null talisman");
                         p.closeInventory();
-                        e.setCancelled(true);
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &cCached Talisman not found!"));
                         return;
                     }
 
@@ -296,7 +294,7 @@ public class GUIListener implements Listener {
                 case "Talisman Effects" -> {
                     if (talismanEditing.get(p) == null){
                         p.closeInventory();
-                        e.setCancelled(true);
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &cCached Talisman not found!"));
                         return;
                     }
 
@@ -432,7 +430,7 @@ public class GUIListener implements Listener {
                     }
                     Talisman talisman = TalismanCreator.getTalismansManager().getTalisman(buttonTitle);
                     if (talisman == null){
-                        p.sendMessage(pluginPrefix + " &cNot found error.");
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &cNot found error."));
                         return;
                     }
                     new TalismanEditGUI(p, talisman);

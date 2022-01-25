@@ -2,6 +2,7 @@ package me.gca.talismancreator.events;
 
 import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +12,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class EventsListeners implements Listener {
 
@@ -50,23 +52,17 @@ public class EventsListeners implements Listener {
     public void onPlayerConsumeEvent(PlayerItemConsumeEvent e){
         if (!e.isCancelled()) {
             // If user drinks milk, reapply effects
-            if (e.getItem().getType().equals(XMaterial.MILK_BUCKET.parseMaterial())) {
+            ItemStack itemStack = e.getItem();
+            if (TalismanCreator.getTalismansManager().isTalisman(e.getItem())){
+                e.setCancelled(true);
+            } else if (itemStack.getType().equals(XMaterial.MILK_BUCKET.parseMaterial())) {
                 TalismanCreator.getTalismansManager().applyTalismansToPlayer(e.getPlayer());
             }
         }
     }
 
     @EventHandler
-    public void onPlayerEat(PlayerItemConsumeEvent e){
-        if (!e.isCancelled()){
-            if (TalismanCreator.getTalismansManager().isTalisman(e.getItem())){
-                e.setCancelled(true);
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPlayerDropEvent(BlockPlaceEvent e){
+    public void onPlayerPlaceEvent(BlockPlaceEvent e){
         if (!e.isCancelled()){
             if (TalismanCreator.getTalismansManager().isTalisman(e.getItemInHand())){
                 e.setCancelled(true);

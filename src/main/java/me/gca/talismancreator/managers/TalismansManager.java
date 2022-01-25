@@ -210,10 +210,8 @@ public class TalismansManager {
                         }
                     }
                 }
-            } else {
-                if (talisman.getItemStack().isSimilar(itemStack)) {
-                    return true;
-                }
+            } else if (talisman.getItemStack().isSimilar(itemStack)) {
+                return true;
             }
         }
         return false;
@@ -221,6 +219,7 @@ public class TalismansManager {
 
     /**
      * Get Talisman by name - title.
+     * Avoid using this because if something is renamed like the talisman it may return a valid talisman while it is not.
      * */
     public Talisman getTalisman(String title){
         for (Talisman talisman : talismans){
