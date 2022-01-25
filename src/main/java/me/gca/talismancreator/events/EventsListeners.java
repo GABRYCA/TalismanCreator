@@ -2,7 +2,6 @@ package me.gca.talismancreator.events;
 
 import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

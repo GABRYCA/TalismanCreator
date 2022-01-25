@@ -1,6 +1,5 @@
 package me.gca.talismancreator.events;
 
-import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
 import me.gca.talismancreator.gui.*;
@@ -15,14 +14,12 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 public class GUIListener implements Listener {
 

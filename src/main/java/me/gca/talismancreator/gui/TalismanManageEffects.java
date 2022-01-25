@@ -1,6 +1,5 @@
 package me.gca.talismancreator.gui;
 
-import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
 import me.gca.talismancreator.events.GUIListener;

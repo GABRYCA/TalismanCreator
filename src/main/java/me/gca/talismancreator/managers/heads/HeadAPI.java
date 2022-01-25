@@ -3,12 +3,8 @@ package me.gca.talismancreator.managers.heads;
 import me.gca.talismancreator.TalismanCreator;
 import me.gca.talismancreator.managers.heads.database.Category;
 import me.gca.talismancreator.managers.heads.database.HeadDatabase;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
