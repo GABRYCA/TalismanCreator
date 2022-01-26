@@ -72,7 +72,7 @@ public class TalismansManager {
      * */
     public void applyTalismansToPlayer(Player p){
         // Remove all active potion effects.
-        for (PotionEffect effect : p.getActivePotionEffects()) {
+        /*for (PotionEffect effect : p.getActivePotionEffects()) {
             p.removePotionEffect(effect.getType());
         }
         Inventory inv = p.getInventory();
@@ -98,7 +98,8 @@ public class TalismansManager {
                     applyPotionEffects(p, talisman);
                 }
             }
-        }
+        }*/
+        updateTalismansToPlayer(p);
     }
 
     private void applyPotionEffects(Player p, Talisman talisman) {
@@ -117,6 +118,71 @@ public class TalismansManager {
                 TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success") + " [" + p.getName() + "-" + effect.toString() + "]"));
             }
         }
+    }
+
+    public void updateTalismansToPlayer(Player p){
+        List<PotionEffect> alreadyHaveEffects = new ArrayList<>(p.getActivePotionEffects());
+        List<PotionEffect> ownedEffectsFromInv = getPotionEffectsOfInventory(p);
+        for (PotionEffect effect : ownedEffectsFromInv) {
+            if (p.hasPotionEffect(effect.getType())) {
+                PotionEffect pPlayer = p.getPotionEffect(effect.getType());
+                if (pPlayer.getAmplifier() >= effect.getAmplifier()) {
+                    // Do nothing
+                } else {
+                    // Apply effect.
+                    p.addPotionEffect(effect);
+                    TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success") + " [" + p.getName() + "-" + effect.toString() + "]"));
+                }
+                alreadyHaveEffects.removeIf(potionEffect -> potionEffect.getType() == effect.getType());
+            } else {
+                // Apply effect.
+                p.addPotionEffect(effect);
+                alreadyHaveEffects.removeIf(potionEffect -> potionEffect.getType() == effect.getType());
+                TalismanCreator.getInstance().getLogger().info(TalismanCreator.colorFormat(messages.getString("Messages.Talisman_Effect_Applied_Success") + " [" + p.getName() + "-" + effect.toString() + "]"));
+            }
+        }
+        for (PotionEffect effect : alreadyHaveEffects){
+            if (effect.getDuration() > 36000){
+                p.removePotionEffect(effect.getType());
+            }
+        }
+    }
+
+    private List<PotionEffect> getPotionEffectsOfInventory(Player p){
+        List<PotionEffect> effects = new ArrayList<>();
+        Inventory inv = p.getInventory();
+        // For each Talisman available
+        for (Talisman talisman : talismans) {
+            // Check if the ItemStack of the Talisman is in the Player Inventory.
+            if (talisman.isSkull()) {
+                for (ItemStack itemStack : inv.getContents()){
+                    if (itemStack != null){
+                        if (itemStack.hasItemMeta()){
+                            ItemMeta meta = itemStack.getItemMeta();
+                            if (meta.hasDisplayName() && TalismanCreator.colorFormat(meta.getDisplayName()).equalsIgnoreCase(talisman.getTitle())){
+                                if (meta.hasLore() && TalismanCreator.colorFormat(meta.getLore()).equals(talisman.getLore())){
+                                    for (PotionEffect effect : talisman.getEffects()){
+                                        if (!effects.contains(effect)){
+                                            effects.add(effect);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (inv.containsAtLeast(talisman.getItemStack(), 1)) {
+                    // For each effect of the Talisman effect.
+                    for (PotionEffect effect : talisman.getEffects()){
+                        if (!effects.contains(effect)){
+                            effects.add(effect);
+                        }
+                    }
+                }
+            }
+        }
+        return effects;
     }
 
     /**

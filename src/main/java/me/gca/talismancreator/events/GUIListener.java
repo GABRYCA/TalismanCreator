@@ -24,7 +24,7 @@ import java.util.List;
 public class GUIListener implements Listener {
 
     private static GUIListener instance;
-    private static List<Player> playersUsingGUI = new ArrayList<>();
+    public static List<Player> playersUsingGUI = new ArrayList<>();
     private static List<Player> playersUsingChat = new ArrayList<>();
     private static HashMap<Player, Talisman> talismanEditing = new HashMap<>();
     private static final Configuration messages = TalismanCreator.getMessagesConfig();

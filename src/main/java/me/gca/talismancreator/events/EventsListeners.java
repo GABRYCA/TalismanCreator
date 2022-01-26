@@ -1,21 +1,10 @@
 package me.gca.talismancreator.events;
 
-import com.cryptomorin.xseries.XMaterial;
-import me.gca.talismancreator.TalismanCreator;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class EventsListeners implements Listener {
 
-    @EventHandler
+    /*@EventHandler
     public void onBlockPickup(EntityPickupItemEvent e){
         if (!e.isCancelled()) {
             // Run only if is Player, for now I don't want other entities to be able to use Talismans.
@@ -68,5 +57,45 @@ public class EventsListeners implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onInventoryClickItem(InventoryClickEvent e) {
+        if (!GUIListener.playersUsingGUI.isEmpty() || GUIListener.playersUsingGUI.contains(e.getView().getPlayer())){
+            return;
+        }
+        if (e.getCursor() == null || e.getClickedInventory() == null){
+            return;
+        }
+        Player p = (Player) e.getView().getPlayer();
+        if (e.getClickedInventory().getType() == InventoryType.PLAYER){
+            if (e.getCurrentItem() != null){
+                if (!TalismanCreator.getTalismansManager().isTalisman(e.getCurrentItem())){
+                    return;
+                }
+            }
+            if (e.getView().getCursor() != null){
+                if (!TalismanCreator.getTalismansManager().isTalisman(e.getView().getCursor())){
+                    return;
+                }
+            }
+            Bukkit.getScheduler().runTaskLater(TalismanCreator.getInstance(), () -> {
+                p.updateInventory();
+                TalismanCreator.getTalismansManager().applyTalismansToPlayer(p);
+            }, 1L);
+        } else if (e.isShiftClick()){
+            Bukkit.getScheduler().runTaskLater(TalismanCreator.getInstance(), () -> {
+                p.updateInventory();
+                TalismanCreator.getTalismansManager().applyTalismansToPlayer(p);
+            }, 1L);
+            return;
+        }
+        /*if (e.getClickedInventory().getType() != InventoryType.PLAYER) {
+            TalismanCreator.getTalismansManager().applyTalismansToPlayer((Player) e.getView().getPlayer());
+            return;
+        }
+        if (TalismanCreator.getTalismansManager().isTalisman(e.getCursor().clone())){
+            TalismanCreator.getTalismansManager().applyTalismanItem((Player) e.getView().getPlayer(), e.getCursor().clone());
+        }*/
+    //}
 }
 

@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,10 @@ public final class TalismanCreator extends JavaPlugin {
         }
         HeadAPI.getDatabase().updateAsync(heads -> getLogger().info("Fetched " + HeadAPI.getHeads().size() + " heads!"));
         HeadAPI.getDatabase().setRefresh(3600*20);
+        BukkitScheduler scheduler = getServer().getScheduler();
+        scheduler.scheduleSyncRepeatingTask(this, () -> {
+            Bukkit.getOnlinePlayers().forEach(player -> talismansManager.applyTalismansToPlayer(player));
+        }, 0L, 20L);
         getLogger().info(ChatColor.GREEN + "Enabled with success!");
     }
 
