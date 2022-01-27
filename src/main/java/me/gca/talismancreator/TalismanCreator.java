@@ -1,7 +1,6 @@
 package me.gca.talismancreator;
 
 import me.gca.talismancreator.commands.TalismanCommands;
-import me.gca.talismancreator.events.EventsListeners;
 import me.gca.talismancreator.events.GUIListener;
 import me.gca.talismancreator.managers.TalismansManager;
 import me.gca.talismancreator.managers.heads.HeadAPI;
@@ -63,7 +62,6 @@ public final class TalismanCreator extends JavaPlugin {
         messagesConfig = new MessagesConfig().getMessages();
         talismansManager = new TalismansManager();
         pluginPrefix = getConfig().getString("Plugin.PluginPrefix");
-        Bukkit.getPluginManager().registerEvents(new EventsListeners(), this);
         Bukkit.getPluginManager().registerEvents(new GUIListener(), this);
         getCommand("talisman").setExecutor(new TalismanCommands());
         // BStats
@@ -75,7 +73,9 @@ public final class TalismanCreator extends JavaPlugin {
         HeadAPI.getDatabase().setRefresh(3600*20);
         BukkitScheduler scheduler = getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(this, () -> {
-            Bukkit.getOnlinePlayers().forEach(player -> talismansManager.applyTalismansToPlayer(player));
+            Bukkit.getOnlinePlayers().forEach(p -> {
+                talismansManager.applyTalismansToPlayer(p);
+            });
         }, 0L, 20L);
         getLogger().info(ChatColor.GREEN + "Enabled with success!");
     }
