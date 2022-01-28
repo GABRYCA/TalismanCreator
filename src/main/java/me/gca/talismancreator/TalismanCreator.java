@@ -1,7 +1,7 @@
 package me.gca.talismancreator;
 
 import me.gca.talismancreator.commands.TalismanCommands;
-import me.gca.talismancreator.events.GUIListener;
+import me.gca.talismancreator.events.Listeners;
 import me.gca.talismancreator.managers.TalismansManager;
 import me.gca.talismancreator.managers.heads.HeadAPI;
 import me.gca.talismancreator.messages.MessagesConfig;
@@ -62,7 +62,7 @@ public final class TalismanCreator extends JavaPlugin {
         messagesConfig = new MessagesConfig().getMessages();
         talismansManager = new TalismansManager();
         pluginPrefix = getConfig().getString("Plugin.PluginPrefix");
-        Bukkit.getPluginManager().registerEvents(new GUIListener(), this);
+        Bukkit.getPluginManager().registerEvents(new Listeners(), this);
         getCommand("talisman").setExecutor(new TalismanCommands());
         // BStats
         if (getConfig().getBoolean("Plugin.metrics-bstats")) {

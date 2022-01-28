@@ -2,7 +2,7 @@ package me.gca.talismancreator.gui.util;
 
 import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
-import me.gca.talismancreator.events.GUIListener;
+import me.gca.talismancreator.events.Listeners;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -108,6 +108,6 @@ public class SpigotGUIComponents {
      * */
     public void openGUI(Inventory inv, Player p){
         p.openInventory(inv);
-        GUIListener.getInstance().addToActivePlayersGUI(p);
+        Listeners.getInstance().addToActivePlayersGUI(p);
     }
 }

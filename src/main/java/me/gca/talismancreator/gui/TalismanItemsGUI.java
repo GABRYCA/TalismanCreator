@@ -2,7 +2,7 @@ package me.gca.talismancreator.gui;
 
 import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
-import me.gca.talismancreator.events.GUIListener;
+import me.gca.talismancreator.events.Listeners;
 import me.gca.talismancreator.gui.util.SpigotGUIComponents;
 import me.gca.talismancreator.managers.Talisman;
 import org.bukkit.Bukkit;
@@ -19,7 +19,7 @@ public class TalismanItemsGUI extends SpigotGUIComponents {
 
         // Params
         int size = 9*6;
-        GUIListener.getInstance().addTalismanEditing(p, talisman);
+        Listeners.getInstance().addTalismanEditing(p, talisman);
 
         // Create Buttons
         ItemStack previousPage = createButton(XMaterial.BOOK.parseMaterial(), 1, createLore("&8Previous page"), "&6Previous-Page " + (startingPoint - 45));

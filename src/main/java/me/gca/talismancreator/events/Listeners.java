@@ -9,9 +9,11 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -21,9 +23,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class GUIListener implements Listener {
+public class Listeners implements Listener {
 
-    private static GUIListener instance;
+    private static Listeners instance;
     public static List<Player> playersUsingGUI = new ArrayList<>();
     private static List<Player> playersUsingChat = new ArrayList<>();
     private static HashMap<Player, Talisman> talismanEditing = new HashMap<>();
@@ -33,11 +35,11 @@ public class GUIListener implements Listener {
     private String mode;
     private int beingEditedLore;
 
-    public GUIListener(){}
+    public Listeners(){}
 
-    public static GUIListener getInstance(){
+    public static Listeners getInstance(){
         if (instance == null){
-            instance = new GUIListener();
+            instance = new Listeners();
         }
         return instance;
     }
@@ -109,6 +111,24 @@ public class GUIListener implements Listener {
         removeTalismanEditing(p);
         e.setCancelled(true);
         p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
+    }
+
+    @EventHandler
+    public void onPlayerConsumeEvent(PlayerItemConsumeEvent e){
+        if (!e.isCancelled()) {
+            // If user drinks milk, reapply effects
+            if (TalismanCreator.getTalismansManager().isTalisman(e.getItem())){
+                e.setCancelled(true);
+            }
+        }
+    }
+    @EventHandler
+    public void onPlayerPlaceEvent(BlockPlaceEvent e){
+        if (!e.isCancelled()){
+            if (TalismanCreator.getTalismansManager().isTalisman(e.getItemInHand())){
+                e.setCancelled(true);
+            }
+        }
     }
 
     @EventHandler

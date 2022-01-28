@@ -2,7 +2,7 @@ package me.gca.talismancreator.gui;
 
 import com.cryptomorin.xseries.XMaterial;
 import me.gca.talismancreator.TalismanCreator;
-import me.gca.talismancreator.events.GUIListener;
+import me.gca.talismancreator.events.Listeners;
 import me.gca.talismancreator.gui.util.SpigotGUIComponents;
 import me.gca.talismancreator.managers.Talisman;
 import org.bukkit.Bukkit;
@@ -21,7 +21,7 @@ public class TalismanManageLore extends SpigotGUIComponents {
 
         // Params
         int size = 9*6;
-        GUIListener.getInstance().addTalismanEditing(p, talisman);
+        Listeners.getInstance().addTalismanEditing(p, talisman);
 
         // Create Buttons
         ItemStack legendButton = createButton(XMaterial.BOOK.parseItem(), createLore("&8 - Click to edit", "&8 - Right Click to delete", " ", "&cBE CAREFUL, You can't move lores!", "&8If you want to add a line between", "&8The already existing ones, you need", "&8To delete them in order."), "&6Legend:");
