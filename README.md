@@ -1,5 +1,5 @@
 # TalismanCreator
-[![Java CI with Gradle](https://github.com/GABRYCA/TalismanCreator/actions/workflows/gradle.yml/badge.svg)](https://github.com/GABRYCA/TalismanCreator/actions/workflows/gradle.yml)
+[![Nightly Builds](https://github.com/GABRYCA/TalismanCreator/actions/workflows/gradle.yml/badge.svg)](https://github.com/GABRYCA/TalismanCreator/actions/workflows/gradle.yml)
 <br>
 <br>
 A Plugin to make Talismans and give "effects" to players owning them.
