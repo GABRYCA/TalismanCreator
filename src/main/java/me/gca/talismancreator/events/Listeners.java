@@ -116,7 +116,6 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerConsumeEvent(PlayerItemConsumeEvent e){
         if (!e.isCancelled()) {
-            // If user drinks milk, reapply effects
             if (TalismanCreator.getTalismansManager().isTalisman(e.getItem())){
                 e.setCancelled(true);
             }
