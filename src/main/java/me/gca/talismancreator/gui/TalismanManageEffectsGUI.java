@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class TalismanManageEffects extends SpigotGUIComponents {
+public class TalismanManageEffectsGUI extends SpigotGUIComponents {
 
-    public TalismanManageEffects(Player p, Talisman talisman){
+    public TalismanManageEffectsGUI(Player p, Talisman talisman){
         // Check conditions.
         if (p == null || talisman == null){
             return;
@@ -25,14 +25,16 @@ public class TalismanManageEffects extends SpigotGUIComponents {
         // Create Buttons
         ItemStack removeEffectButton = createButton(XMaterial.BREWING_STAND.parseItem(), createLore("&8Click to manage"), "&6Remove effects");
         ItemStack addEffectButton = createButton(XMaterial.BREAD.parseItem(), createLore("&8Click to manage"), "&6Add effect");
+        ItemStack editIntensityButton = createButton(XMaterial.REDSTONE.parseItem(), createLore("&8Click to manage."), "&6Edit effects intensity");
 
         // Create Inventory.
         Inventory inv = Bukkit.createInventory(null, size, TalismanCreator.colorFormat("&6Talisman Manage Effects"));
 
         // Add Buttons to Inventory.
         inv.setItem(size - 1, getCloseGUIButton());
-        inv.setItem(11, removeEffectButton);
-        inv.setItem(15, addEffectButton);
+        inv.setItem(10, removeEffectButton);
+        inv.setItem(13, addEffectButton);
+        inv.setItem(16, editIntensityButton);
 
         // Open Inventory.
         openGUI(inv, p);

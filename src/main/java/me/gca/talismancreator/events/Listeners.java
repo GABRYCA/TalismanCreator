@@ -183,7 +183,7 @@ public class Listeners implements Listener {
                         }
                         case "Manage Effects" -> {
                             Talisman talisman = talismanEditing.get(p);
-                            new TalismanManageEffects(p, talisman);
+                            new TalismanManageEffectsGUI(p, talisman);
                             addTalismanEditing(p, talisman);
                         }
                         case "Manage Lore" -> {
@@ -291,13 +291,19 @@ public class Listeners implements Listener {
                     }
 
                     switch (buttonTitle){
-                        case "Remove effects" ->{
+                        case "Remove effects" -> {
                             Talisman talisman = talismanEditing.get(p);
                             new TalismanRemoveEffectsGUI(p, talisman);
-                            addTalismanEditing(p, talisman);                        }
+                            addTalismanEditing(p, talisman);
+                        }
                         case "Add effect" -> {
                             Talisman talisman = talismanEditing.get(p);
                             new TalismanEffectsGUI(p, talisman, 0);
+                            addTalismanEditing(p, talisman);
+                        }
+                        case "Edit effects intensity" -> {
+                            Talisman talisman = talismanEditing.get(p);
+                            new TalismanManageEffectsIntensityGUI(p, talisman);
                             addTalismanEditing(p, talisman);
                         }
                         default -> {
@@ -342,6 +348,73 @@ public class Listeners implements Listener {
                         }
                     }
                     e.setCancelled(true);
+                }
+
+                case "Talisman Effects Intensity" -> {
+                    if (talismanEditing.get(p) == null){
+                        p.closeInventory();
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &cCached Talisman not found!"));
+                        return;
+                    }
+
+                    Talisman talisman = talismanEditing.get(p);
+                    PotionEffect editingEffect = null;
+                    for (PotionEffect effect : talisman.getEffects()){
+                        if (effect.getType().equals(buttonTitle)){
+                            editingEffect = effect;
+                        }
+                    }
+
+                    if (editingEffect != null) {
+                        new TalismanEditEffectIntensityGUI(p, talisman, editingEffect.getType(), editingEffect.getAmplifier());
+                        addTalismanEditing(p, talisman);
+                    } else {
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6Error, something went wrong! [editingEffect is null!]"));
+                    }
+                }
+
+                case "Talisman Edit Intensity" -> {
+                    if (talismanEditing.get(p) == null){
+                        p.closeInventory();
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &cCached Talisman not found!"));
+                        return;
+                    }
+
+                    Talisman talisman = talismanEditing.get(p);
+                    String[] parts = buttonTitle.split(" ");
+                    if (parts.length == 2){
+                        List<PotionEffect> potionEffects = talisman.getEffects();
+                        PotionEffectType potionEffectType = PotionEffectType.getByName(parts[0]);
+                        if (potionEffectType == null){
+                            e.setCancelled(true);
+                            p.closeInventory();
+                            p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &cSomething went wrong, not valid effect!"));
+                            return;
+                        }
+                        PotionEffect newPotionEffect = new PotionEffect(PotionEffectType.getByName(parts[0]), Integer.MAX_VALUE, Integer.parseInt(parts[1]));
+                        int counter = 0;
+                        for (PotionEffect effect : potionEffects){
+                            if (effect.getType().equals(parts[0])){
+                                break;
+                            }
+                            counter++;
+                        }
+                        potionEffects.set(counter, newPotionEffect);
+                        Talisman newTalisman = talisman;
+                        newTalisman.setEffects(potionEffects);
+                        TalismanCreator.getTalismansManager().editTalisman(talisman, newTalisman);
+                        p.closeInventory();
+                        p.sendMessage(TalismanCreator.colorFormat(pluginPrefix + " &6" + messages.getString("Messages.Talisman_Edit_Success")));
+                        return;
+                    }
+
+                    if (parts[2].equalsIgnoreCase("-")){
+                        new TalismanEditEffectIntensityGUI(p, talisman, PotionEffectType.getByName(parts[0]), Integer.parseInt(parts[1]) - 1);
+                        addTalismanEditing(p, talisman);
+                    } else if (parts[2].equalsIgnoreCase("+")){
+                        new TalismanEditEffectIntensityGUI(p, talisman, PotionEffectType.getByName(parts[0]), Integer.parseInt(parts[1]) + 1);
+                        addTalismanEditing(p, talisman);
+                    }
                 }
 
                 case "Talisman Remove Effect" -> {
