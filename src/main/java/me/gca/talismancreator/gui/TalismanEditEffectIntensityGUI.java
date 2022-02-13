@@ -31,9 +31,9 @@ public class TalismanEditEffectIntensityGUI extends SpigotGUIComponents {
         // Create Inventory.
         Inventory inv = Bukkit.createInventory(null, size, TalismanCreator.colorFormat("&6Talisman Edit Intensity"));
 
-        ItemStack decreaseButton = createButton(XMaterial.REDSTONE_BLOCK.parseItem(), createLore("&8Click to decrease"), effectType.getName() + " " + intensity + " - " + "1");
-        ItemStack increaseButton = createButton(XMaterial.EMERALD_BLOCK.parseItem(), createLore("&8Click to increase"), effectType.getName() + " " + intensity + " + " + "1");
-        ItemStack confirmButton = createButton(XMaterial.POTION.parseItem(), createLore("&8Click to confirm"), effectType.getName() + " " + intensity);
+        ItemStack decreaseButton = createButton(XMaterial.REDSTONE_BLOCK.parseItem(), createLore("&8Click to decrease"), "&c" + effectType.getName() + " " + intensity + " - " + "1");
+        ItemStack increaseButton = createButton(XMaterial.EMERALD_BLOCK.parseItem(), createLore("&8Click to increase"), "&a" + effectType.getName() + " " + intensity + " + " + "1");
+        ItemStack confirmButton = createButton(XMaterial.POTION.parseItem(), createLore("&8Click to confirm"), "&6" + effectType.getName() + " " + intensity);
 
         // Add Buttons to Inventory.
         inv.setItem(0, decreaseButton);

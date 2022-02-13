@@ -360,7 +360,7 @@ public class Listeners implements Listener {
                     Talisman talisman = talismanEditing.get(p);
                     PotionEffect editingEffect = null;
                     for (PotionEffect effect : talisman.getEffects()){
-                        if (effect.getType().equals(buttonTitle)){
+                        if (effect.getType().getName().equalsIgnoreCase(buttonTitle)){
                             editingEffect = effect;
                         }
                     }
@@ -394,7 +394,7 @@ public class Listeners implements Listener {
                         PotionEffect newPotionEffect = new PotionEffect(PotionEffectType.getByName(parts[0]), Integer.MAX_VALUE, Integer.parseInt(parts[1]));
                         int counter = 0;
                         for (PotionEffect effect : potionEffects){
-                            if (effect.getType().equals(parts[0])){
+                            if (effect.getType().getName().equals(parts[0])){
                                 break;
                             }
                             counter++;
