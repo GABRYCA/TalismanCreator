@@ -72,11 +72,7 @@ public final class TalismanCreator extends JavaPlugin {
         HeadAPI.getDatabase().updateAsync(heads -> getLogger().info("Fetched " + HeadAPI.getHeads().size() + " heads!"));
         HeadAPI.getDatabase().setRefresh(3600*20);
         BukkitScheduler scheduler = getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(this, () -> {
-            Bukkit.getOnlinePlayers().forEach(p -> {
-                talismansManager.applyTalismansToPlayer(p);
-            });
-        }, 0L, 20L);
+        scheduler.scheduleSyncRepeatingTask(this, () -> Bukkit.getOnlinePlayers().forEach(p -> talismansManager.applyTalismansToPlayer(p)), 0L, 20L);
         getLogger().info(ChatColor.GREEN + "Enabled with success!");
     }
 
