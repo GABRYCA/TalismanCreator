@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.gca'
-version = '0.2.5'
+version = '0.2.6'
 
 apply plugin: "com.github.johnrengelman.shadow"
 
@@ -27,11 +27,11 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.cryptomorin:XSeries:8.6.2'
+    implementation 'com.github.cryptomorin:XSeries:8.8.0'
     implementation 'org.bstats:bstats-bukkit:3.0.0'
     compileOnly 'com.googlecode.json-simple:json-simple:1.1.1'
     compileOnly 'com.mojang:authlib:1.5.25'
-    compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
 }
 
 def targetJavaVersion = 17
