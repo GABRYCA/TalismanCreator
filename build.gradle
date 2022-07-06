@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.gca'
-version = '0.2.6'
+version = '0.2.7'
 
 apply plugin: "com.github.johnrengelman.shadow"
 
@@ -27,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.cryptomorin:XSeries:8.8.0'
+    implementation 'com.github.cryptomorin:XSeries:9.0.0'
     implementation 'org.bstats:bstats-bukkit:3.0.0'
     compileOnly 'com.googlecode.json-simple:json-simple:1.1.1'
     compileOnly 'com.mojang:authlib:1.5.25'
